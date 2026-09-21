@@ -1,0 +1,287 @@
+* {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  scroll-behavior: smooth;
+}
+
+body {
+  color: azure;
+  background-color: black;
+}
+
+header {
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 10%;
+    background-color: #111;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+
+    nav ul {
+      width: 400px;
+      display: flex;
+      justify-content: space-between;
+
+      li a {
+        color: azure;
+      }
+    }
+  }
+
+  .hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: black;
+    
+    div {
+      width: 200px;
+
+      img {
+        width: 200px;
+        height: 200px;
+        border-radius: 100%;
+        object-fit: cover;
+      }
+    }
+    h3 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 1.2rem;
+    }
+  }
+}
+
+#tentang {
+  padding: 30px 10%;
+  background-color: #111;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+
+  h3.section-title {
+    font-size: 2rem;
+    text-align: center;
+  }
+
+  .tentang-konten {
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+
+    .bagian-kanan {
+      flex: 1.2;
+
+      h4 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        color: #fff;
+      }
+      p {
+        line-height: 1.6;
+        color: #ccc;
+        margin-bottom: 20px;
+      }
+      .info-detail {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+      }
+      .info-detail li {
+        color: #ccc;
+      }
+      .info-detail li strong {
+        color: azure;
+      }
+    }
+  }
+}
+
+#galeri {
+  padding: 80px 10%;
+  background-color: black;
+
+  h3.section-title {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .container-gambar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+
+    .item-gambar {
+      position: relative;
+      overflow: hidden;
+      border-radius: 10px;
+      height: 250px;
+      box-shadow: 0 4px 15px rgba(255, 255, 255, 0.05);
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+      }
+      .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(transparent, rgba(0, 0, 255, 0.8));
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 20px;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+
+        h4 {
+          font-size: 1.2rem;
+          color: white;
+          margin-bottom: 5px;
+        }
+        p {
+          font-size: 0.9rem;
+          color: #ddd;
+        }
+      }
+      &:hover img {
+        transform: scale(1.1);
+      }
+      &:hover .overlay {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+#kontak {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px 0;
+  background-color: #1e1e1e;
+
+  h3{
+    text-align: center;
+  }
+  .form-kontak {
+    width: 500px;
+    padding: 30px;
+    margin-top: 30px;
+    border-radius: 20px;
+    background-color: black;
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    
+        label.main-label {
+          font-weight: 600;
+          font-size: 0.95rem;
+          color: #e5e7eb;
+        }
+    
+        input[type='text'],
+        textarea {
+          width: 100%;
+          padding: 12px 14px;
+          border-radius: 8px;
+          border: 1px solid #374151;
+          background-color: #2d2d2d;
+          color: #ffffff;
+          font-size: 0.95rem;
+          font-family: inherit;
+          transition: all 0.2s ease;
+          outline: none;
+        }
+    
+        input[type='text']:focus,
+        select:focus,
+        textarea:focus {
+          border-color: #3b82f6;
+          box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+      }
+    
+      .form-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 10px;
+    
+        button {
+          flex: 1;
+          padding: 12px;
+          font-size: 1rem;
+          font-weight: 600;
+          cursor: pointer;
+          border-radius: 8px;
+          border: none;
+          transition: all 0.3s ease;
+        }
+    
+        button[type='submit'] {
+          background-color: #3b82f6;
+          color: white;
+        }
+    
+        button[type='submit']:hover {
+          background-color: #2563eb;
+        }
+    
+        button[type='reset'] {
+          background-color: transparent;
+          color: #9ca3af;
+          border: 1px solid #4b5563;
+        }
+    
+        button[type='reset']:hover {
+          background-color: rgba(255, 255, 255, 0.05);
+          color: #ffffff;
+          border-color: #9ca3af;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .tentang-konten {
+    flex-direction: column;
+    text-align: center;
+    
+    .bagian-kanan .info-detail {
+      grid-template-columns: 1fr;
+    }
+  }
+}

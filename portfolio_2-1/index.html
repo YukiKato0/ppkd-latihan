@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <header>
+    <div class="navbar">
+      <div class="logo">Logo</div>
+      <nav>
+        <ul>
+          <li><a href="">Beranda</a></li>
+          <li><a href="#tentang">Tentang</a></li>
+          <li><a href="#galeri">Gambar</a></li>
+          <li><a href="#kontak">Kontak</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="hero">
+      <div>
+        <img src="./images/People.jpeg" alt="Foto Profil">
+      </div>
+      <h3>Saka Bayu</h3>
+      <p>Frontend Developer</p>
+    </div>
+  </header>
+
+  <main>
+    <section id="tentang">
+      <h3 class="section-title">Tentang Saya</h3>
+      <div class="tentang-konten">
+        <div class="bagian-kanan">
+          <h4>Saya seorang Frontend Developer</h4>
+          <p>Saya adalah seorang pengembang web yang fokus pada penciptaan pengalaman pengguna (UI/UX) yang menarik,
+            responsif, dan interaktif. Berbekal pemahaman mendalam tentang HTML, CSS, dan JavaScript, saya suka mengubah
+            baris kode menjadi visual yang hidup di browser.</p>
+        </div>
+
+        <div class="bagian-kanan">
+          <h4>Histori</h4>
+          <ul class="info-detail">
+            <li><strong>Pendidikan:</strong> Teknik Informatika</li>
+            <li><strong>Domisili:</strong> Jakarta, Indonesia</li>
+            <li><strong>Keahlian:</strong> HTML, CSS, JavaScript, React</li>
+            <li><strong>Status:</strong> Tersedia untuk Freelance</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="galeri">
+      <h3 class="section-title">Galeri Projek</h3>
+      <div class="container-gambar">
+        <div class="item-gambar">
+          <img src="./images/Gambar-1.webp" alt="Projek POS">
+          <div class="overlay">
+            <h4>Point of Sale (POS)</h4>
+            <p>Aplikasi ini adalah Point of Sale (POS) desktop berbasis Local-First yang dirancang untuk operasional
+              toko retail secara offline.</p>
+          </div>
+        </div>
+
+        <div class="item-gambar">
+          <img src="./images/Gambar-2.webp" alt="Projek Game Dashboard">
+          <div class="overlay">
+            <h4>Game Dashboard</h4>
+            <p>Catalog game dalam website adalah sebuah sistem atau halaman yang berisi daftar game yang tersedia untuk
+              diakses oleh pengguna.</p>
+          </div>
+        </div>
+
+        <div class="item-gambar">
+          <img src="./images/Gambar-3.webp" alt="Projek toko baju">
+          <div class="overlay">
+            <h4>Website E-Commerce</h4>
+            <p>Toko busana yang khusus menjual pakaian premium untuk pria dan wanita.</p>
+          </div>
+        </div>
+
+        <div class="item-gambar">
+          <img src="./images/Gambar-4.webp" alt="Projek Portofolio">
+          <div class="overlay">
+            <h4>Personal Finance Wealth Tracker</h4>
+            <p>Website Personal Finance Wealth Tracker berfungsi sebagai alat digital untuk mencatat, memantau, dan
+              menganalisis seluruh aset.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="kontak">
+      <h3>Kontak Saya</h3>
+      <div class="form-kontak">
+        <form action="" method="post" enctype="multipart/form-data">
+          <div class="form-group">
+            <label class="main-label" browser-default for="forName">Nama Lengkap</label>
+            <input id="forName" name="name" type="text" placeholder="Masukkan nama lengkap..." />
+          </div>
+
+          <div class="form-group">
+            <label class="main-label" browser-default for="forEmail">Email</label>
+            <input id="forEmail" name="email" type="text" placeholder="Masukkan email anda..." />
+          </div>
+
+          <div class="form-group">
+            <label class="main-label" for="forAlamat">Pesan</label>
+            <textarea name="alamat" id="forAlamat" rows="4" placeholder="Masukkan pesan disini..."></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit">Kirim Pendaftaran</button>
+            <button type="reset">Reset</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+
+  </footer>
+</body>
+
+</html>

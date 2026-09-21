@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pendaftaran Mahasiswa</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #f3f4f6;
+      background-color: #121212;
+      padding: 20px;
+    }
+
+    main {
+      margin: 40px auto;
+      max-width: 600px;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    p {
+      color: #9ca3af;
+      font-size: 0.95rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      padding: 30px;
+      margin-top: 30px;
+      border-radius: 16px;
+      background-color: #1e1e1e;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+
+        label.main-label {
+          font-weight: 600;
+          font-size: 0.95rem;
+          color: #e5e7eb;
+        }
+
+        .input-options {
+          display: flex;
+          flex-wrap: wrap;
+          flex-direction: column;
+          gap: 16px;
+          margin-top: 4px;
+
+          .option-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            color: #d1d5db;
+          }
+
+          .option-label input {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: #3b82f6;
+          }
+        }
+
+        input[type='text'],
+        input[type='tel'],
+        input[type='date'],
+        select,
+        textarea {
+          width: 100%;
+          padding: 12px 14px;
+          border-radius: 8px;
+          border: 1px solid #374151;
+          background-color: #2d2d2d;
+          color: #ffffff;
+          font-size: 0.95rem;
+          font-family: inherit;
+          transition: all 0.2s ease;
+          outline: none;
+        }
+
+        input[type='text']:focus,
+        input[type='tel']:focus,
+        input[type='date']:focus,
+        select:focus,
+        textarea:focus {
+          border-color: #3b82f6;
+          box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        input[type='file'] {
+          color: #9ca3af;
+          font-size: 0.9rem;
+        }
+
+        input[type='file']::file-selector-button {
+          background-color: #374151;
+          color: white;
+          border: none;
+          padding: 8px 16px;
+          border-radius: 6px;
+          cursor: pointer;
+          margin-right: 12px;
+          transition: background 0.2s;
+        }
+
+        input[type='file']::file-selector-button:hover {
+          background-color: #4b5563;
+        }
+      }
+
+      .form-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 10px;
+
+        button {
+          flex: 1;
+          padding: 12px;
+          font-size: 1rem;
+          font-weight: 600;
+          cursor: pointer;
+          border-radius: 8px;
+          border: none;
+          transition: all 0.3s ease;
+        }
+
+        button[type='submit'] {
+          background-color: #3b82f6;
+          color: white;
+        }
+
+        button[type='submit']:hover {
+          background-color: #2563eb;
+        }
+
+        button[type='reset'] {
+          background-color: transparent;
+          color: #9ca3af;
+          border: 1px solid #4b5563;
+        }
+
+        button[type='reset']:hover {
+          background-color: rgba(255, 255, 255, 0.05);
+          color: #ffffff;
+          border-color: #9ca3af;
+        }
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <h1>Isi Form Pendaftaran Mahasiswa</h1>
+    <p>Tolong lengkapi data pendaftaran di bawah ini dengan benar:</p>
+
+    <form action="" method="post" enctype="multipart/form-data">
+      <div class="form-group">
+        <label class="main-label" browser-default for="forName">Nama Lengkap :</label>
+        <input id="forName" name="name" type="text" placeholder="Masukkan nama lengkap..." />
+      </div>
+
+      <div class="form-group">
+        <label class="main-label" for="forNoTlpn">No. Telp / HP :</label>
+        <input type="tel" id="forNoTlpn" name="hp" placeholder="Contoh: 08123456789" />
+      </div>
+
+      <div class="form-group">
+        <label class="main-label">Hobi :</label>
+        <div class="input-options">
+          <label class="option-label"><input type="checkbox" name="hobby[]" value="memasak" />Memasak</label>
+          <label class="option-label"><input type="checkbox" name="hobby[]" value="berenang" />Berenang</label>
+          <label class="option-label"><input type="checkbox" name="hobby[]" value="memancing" />Memancing</label>
+          <label class="option-label"><input type="checkbox" name="hobby[]" value="futsal" />Futsal</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="main-label">Jenis Kelamin :</label>
+        <div class="input-options">
+          <label class="option-label"><input type="radio" name="jenisKelamin" value="L" checked />Laki-laki</label>
+          <label class="option-label"><input type="radio" name="jenisKelamin" value="P" />Perempuan</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="main-label" for="jurusan">Pilih Jurusan :</label>
+        <select name="jurusan" id="jurusan">
+          <option value="">-- Pilih Jurusan --</option>
+          <option value="TI">Teknik Informatika</option>
+          <option value="SI">Sistem Informasi</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="main-label" for="forFoto">Unggah Foto :</label>
+        <input type="file" id="forFoto" name="foto" />
+      </div>
+
+      <div class="form-group">
+        <label class="main-label" for="forAlamat">Alamat :</label>
+        <textarea name="alamat" id="forAlamat" rows="4"
+          placeholder="Masukkan alamat lengkap rumah saat ini..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="main-label" for="forTanggalLahir">Tanggal Lahir :</label>
+        <input type="date" id="forTanggalLahir" name="tanggal_lahir" />
+      </div>
+
+      <div class="form-actions">
+        <button type="submit">Kirim Pendaftaran</button>
+        <button type="reset">Reset</button>
+      </div>
+    </form>
+  </main>
+</body>
+
+</html>
