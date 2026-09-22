@@ -6,11 +6,26 @@
   text-decoration: none;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   scroll-behavior: smooth;
+  scroll-padding-top: 60px;
 }
 
 body {
   color: azure;
-  background-color: black;
+  background-color: #000000;
+}
+
+.parallax {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  background-image: url("https://images.unsplash.com/photo-1570641963303-92ce4845ed4c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+  z-index: -10;
+
+  /* Properti Kunci Parallax */
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 header {
@@ -19,13 +34,16 @@ header {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("https://plus.unsplash.com/premium_photo-1673240367277-e1d394465b56?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
 
   .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 10%;
-    background-color: #111;
+    background-color: rgba(17, 17, 17, 0.6);
     position: fixed;
     top: 0;
     left: 0;
@@ -44,12 +62,15 @@ header {
   }
 
   .hero {
+    width: 600px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    background-color: black;
+    padding: 30px;
+    border-radius: 5%;
+    background-color: rgba(0, 0, 0, 0.6);
     
     div {
       width: 200px;
@@ -118,7 +139,8 @@ header {
 
 #galeri {
   padding: 80px 10%;
-  background-color: black;
+  margin: 200px 0;
+  background-color: rgba(0, 0, 0, 0.6);
 
   h3.section-title {
     font-size: 2rem;
@@ -135,7 +157,6 @@ header {
       position: relative;
       overflow: hidden;
       border-radius: 10px;
-      height: 250px;
       box-shadow: 0 4px 15px rgba(255, 255, 255, 0.05);
 
       img {
@@ -183,9 +204,11 @@ header {
   flex-direction: column;
   align-items: center;
   padding: 50px 0;
+  margin-bottom: 200px;
   background-color: #1e1e1e;
 
   h3{
+    font-size: 2rem;
     text-align: center;
   }
   .form-kontak {
@@ -273,6 +296,15 @@ header {
       }
     }
   }
+}
+
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 70px;
+  background-color: #000000;
 }
 
 @media (max-width: 768px) {
