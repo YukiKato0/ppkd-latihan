@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Saka Bayu | About</title>
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <header id="home">
+      <div class="navbar">
+        <button class="menu-btn" onclick="toggleMenu()">☰</button>
+        <nav id="nav-menu">
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="artikel.html">Article</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="about.html">About me</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section id="about-me">
+        <div class="section-title">
+          <h2>About me</h2>
+          <p>Hi, saya adalah web developer saat ini sedang belajar HTML</p>
+        </div>
+
+        <div class="content">
+          <div>
+            <p>
+              Saya memeang masih baru dalam web development. Karena itu, saya tidak akan pernah berhenti belajar
+            </p>
+            <p>
+              Saya ingin menguasai bahasa HTML, CSS, JavaScript. Simak video lengkap tentang saya:
+            </p>
+          </div>
+
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/El-3J1WMX-g?si=jZzhNpCraaX_J5q7" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; PPKD JAKARTA PUSAT 2026 - SAKA BAYU</p>
+    </footer>
+
+    <script>
+      function toggleMenu() {
+        document.getElementById('nav-menu').classList.toggle('active')
+      }
+    </script>
+  </body>
+</html>

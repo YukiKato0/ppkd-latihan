@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Saka Bayu | Contact</title>
+    <link rel="stylesheet" href="./css/style.css" />
+</head>
+
+<body>
+    <header id="home">
+        <div class="navbar">
+            <button class="menu-btn" onclick="toggleMenu()">☰</button>
+            <nav id="nav-menu">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="artikel.html">Article</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="about.html">About me</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="contact-me">
+            <div class="section-title">
+                <h2>Contact me</h2>
+            </div>
+
+            <div class="content">
+                <form action="" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label class="main-label" browser-default for="forEmail">Email</label>
+                        <input id="forEmail" name="email" type="text" placeholder="Masukkan email anda..." />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="main-label" for="forAlamat">Pesan</label>
+                        <textarea name="alamat" id="forAlamat" rows="4"
+                            placeholder="Masukkan pesan disini..."></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit">Kirim</button>
+                        <button type="reset">Reset</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; PPKD JAKARTA PUSAT 2026 - SAKA BAYU</p>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('nav-menu').classList.toggle('active')
+        }
+    </script>
+</body>
+
+</html>

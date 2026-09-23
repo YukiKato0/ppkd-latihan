@@ -1,12 +1,9 @@
 * {
   margin: 0;
   padding: 0;
-  list-style: none;
   box-sizing: border-box;
   text-decoration: none;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  scroll-behavior: smooth;
-  scroll-padding-top: 60px;
 }
 
 body {
@@ -14,36 +11,25 @@ body {
   background-color: #000000;
 }
 
-.parallax {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  background-image: url("https://images.unsplash.com/photo-1570641963303-92ce4845ed4c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
-  z-index: -10;
-
-  /* Properti Kunci Parallax */
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
 header {
-  height: 70vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-image: url("https://plus.unsplash.com/premium_photo-1673240367277-e1d394465b56?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+  
+  &.home {
+    height: 60vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url('https://plus.unsplash.com/premium_photo-1673240367277-e1d394465b56?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+  }
 
   .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 10%;
-    background-color: rgba(17, 17, 17, 0.6);
+    background-color: rgba(82, 81, 81, 0.6);
     position: fixed;
     top: 0;
     left: 0;
@@ -55,7 +41,7 @@ header {
         width: 400px;
         display: flex;
         justify-content: space-between;
-  
+
         li a {
           color: azure;
         }
@@ -72,7 +58,7 @@ header {
     padding: 30px;
     border-radius: 5%;
     background-color: rgba(0, 0, 0, 0.6);
-    
+
     div {
       width: 200px;
 
@@ -93,126 +79,132 @@ header {
   }
 }
 
-#tentang {
-  padding: 30px 10%;
-  background-color: #111;
+section {
   display: flex;
   flex-direction: column;
   gap: 40px;
+  padding: 30px 10%;
+  background-color: #111;
 
-  h3.section-title {
-    font-size: 2rem;
-    text-align: center;
+  .section-title {
+    h2 {
+      font-size: 2rem;
+    }
   }
 
-  .tentang-konten {
+  .content {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     gap: 50px;
 
-    .bagian-kanan {
+    .item-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       flex: 1.2;
 
-      h4 {
+      h3 {
         font-size: 1.5rem;
         margin-bottom: 15px;
         color: #fff;
       }
-      p {
-        line-height: 1.6;
-        color: #ccc;
-        margin-bottom: 20px;
-      }
+
       .info-detail {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 15px;
-      }
-      .info-detail li {
-        color: #ccc;
-      }
-      .info-detail li strong {
-        color: azure;
+
+        li {
+          color: #ccc;
+
+          strong {
+            color: azure;
+          }
+        }
       }
     }
   }
 }
 
-#galeri {
-  padding: 80px 10%;
-  margin: 200px 0;
-  background-color: rgba(0, 0, 0, 0.6);
+#overview {
+  height: 40vh;
 
-  h3.section-title {
-    font-size: 2rem;
+  .section-title {
     text-align: center;
-    margin-bottom: 40px;
   }
-
-  .container-gambar {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-
-    .item-gambar {
-      position: relative;
-      overflow: hidden;
+  .content {
+    .item-content {
+      padding: 15px;
       border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(255, 255, 255, 0.05);
-
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.5s ease;
-      }
-      .overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(transparent, rgba(0, 0, 255, 0.8));
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-        padding: 20px;
-        opacity: 0;
-        transition: opacity 0.4s ease;
-
-        h4 {
-          font-size: 1.2rem;
-          color: white;
-          margin-bottom: 5px;
-        }
-        p {
-          font-size: 0.9rem;
-          color: #ddd;
-        }
-      }
-      &:hover img {
-        transform: scale(1.1);
-      }
-      &:hover .overlay {
-        opacity: 1;
-      }
+      background-color: #113b68;
     }
   }
 }
 
-#kontak {
+#article {
+  h2 {
+    margin-top: 50px;
+    font-size: 2rem;
+  }
+
+  .content {
+    flex-direction: column;
+    gap: 12px;
+    line-height: 1.6;
+
+    img {
+      max-width: 700px;
+    }
+
+    h3 {
+      font-size: 1.5rem;
+    }
+
+    h4 {
+      font-size: 1.2rem;
+      margin-top: 20px;
+    }
+
+    ul, ol {
+      padding-left: 40px;
+    }
+
+    pre {
+      background-color: #252525;
+      padding: 15px;
+      border-radius: 6px;
+      overflow-x: auto;
+      border-left: 4px solid #007bff;
+      margin: 10px 0;
+      max-width: 500px;
+      
+      code {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 0.9rem;
+        color: #33d64e;
+      }
+    }
+
+    code:not(pre code) {
+      background-color: #e9ecef;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+      color: #ba1a1a;
+    }
+  }
+}
+
+#contact-me {
+  height: 93vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 50px 0;
-  margin-bottom: 200px;
-  background-color: #1e1e1e;
 
-  h3{
-    font-size: 2rem;
-    text-align: center;
+  h2 {
+    margin-top: 50px;
   }
-  .form-kontak {
+  .content {
+    display: flex;
+    flex-direction: column;
     width: 400px;
     padding: 30px;
     margin-top: 30px;
@@ -299,6 +291,17 @@ header {
   }
 }
 
+#about-me {
+  height: 92vh;
+  h2 {
+    margin-top: 50px;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
 footer {
   display: flex;
   justify-content: center;
@@ -311,11 +314,11 @@ footer {
 @media (max-width: 768px) {
   .navbar {
     .menu-btn {
-        display: block;
-        border: none;
-        font-size: 25px;
-        color: white;
-        background-color: transparent;
+      display: block;
+      border: none;
+      font-size: 25px;
+      color: white;
+      background-color: transparent;
     }
     nav {
       position: absolute;
@@ -330,8 +333,8 @@ footer {
       transition: max-height 0.4s ease-in-out, opacity 0.3s ease-in-out;
 
       &.active {
-          max-height: 300px;
-          opacity: 1;
+        max-height: 300px;
+        opacity: 1;
       }
       ul {
         flex-direction: column;
@@ -344,11 +347,11 @@ footer {
       }
     }
   }
-  
+
   .tentang-konten {
     flex-direction: column;
     text-align: center;
-    
+
     .bagian-kanan .info-detail {
       grid-template-columns: 1fr;
     }
@@ -362,9 +365,9 @@ footer {
     overflow: visible !important;
 
     ul {
-        display: flex;
-        list-style: none;
-        gap: 20px;
+      display: flex;
+      list-style: none;
+      gap: 20px;
     }
   }
 

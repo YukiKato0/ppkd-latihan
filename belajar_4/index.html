@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Saka Bayu</title>
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <header id="home" class="home">
+      <div class="navbar">
+        <button class="menu-btn" onclick="toggleMenu()">☰</button>
+        <nav id="nav-menu">
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="artikel.html">Article</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="about.html">About me</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="hero">
+        <div>
+          <img src="./images/People.jpeg" alt="Foto Profil" />
+        </div>
+        <h3>Saka Bayu</h3>
+        <p>Frontend Developer</p>
+      </div>
+    </header>
+
+    <main>
+      <section id="overview">
+        <div class="section-title">
+          <h2>Overview</h2>
+          <p>Hi, saya adalah web developer saat ini sedang belajar HTML</p>
+        </div>
+        
+        <div class="content">
+          <div class="item-content">
+            <h3>Skill</h3>
+
+            <ul class="info-detail">
+              <li><strong>Pendidikan:</strong> Teknik Informatika</li>
+              <li><strong>Domisili:</strong> Jakarta, Indonesia</li>
+              <li><strong>Keahlian:</strong> HTML, CSS, JavaScript, React</li>
+              <li><strong>Status:</strong> Tersedia untuk Freelance</li>
+            </ul>
+          </div>
+
+          <div class="item-content">
+            <h3>Pengalaman</h3>
+
+            <ul class="info-detail">
+              <li><strong>Pendidikan:</strong> Teknik Informatika</li>
+              <li><strong>Domisili:</strong> Jakarta, Indonesia</li>
+              <li><strong>Keahlian:</strong> HTML, CSS, JavaScript, React</li>
+              <li><strong>Status:</strong> Tersedia untuk Freelance</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; PPKD JAKARTA PUSAT 2026 - SAKA BAYU</p>
+    </footer>
+
+    <script>
+      function toggleMenu() {
+        document.getElementById('nav-menu').classList.toggle('active')
+      }
+    </script>
+  </body>
+</html>

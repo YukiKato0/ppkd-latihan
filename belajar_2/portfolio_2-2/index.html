@@ -13,7 +13,8 @@
   <header id="home">
     <div class="navbar">
       <div class="logo">Saka Bayu</div>
-      <nav>
+      <button class="menu-btn" onclick="toggleMenu()">☰</button> 
+      <nav id="nav-menu">
         <ul>
           <li><a href="#home">Beranda</a></li>
           <li><a href="#tentang">Tentang</a></li>
@@ -126,6 +127,12 @@
   <footer>
     <p>&copy; PPKD JAKARTA PUSAT 2026 - SAKA BAYU</p>
   </footer>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById("nav-menu").classList.toggle("active");
+    }
+  </script>
 </body>
 
 </html>

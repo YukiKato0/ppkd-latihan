@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Saka Bayu | Article</title>
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+
+<body>
+  <header id="home">
+    <div class="navbar">
+      <button class="menu-btn" onclick="toggleMenu()">☰</button>
+      <nav id="nav-menu">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="artikel.html">Article</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="about.html">About me</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="article">
+      <div class="section-title">
+        <h2>Artikel</h2>
+      </div>
+
+      <div class="content">
+        <img src="https://www.petanikode.com/img/html/list/ol.png" alt="Tag List HTML">
+        <h3>Cara menggunakan list ul, ol, li beserta typenya di HTML</h3>
+        <p>
+          Gampang banget! Di HTML, tag: &lt;ul&gt;, &lt;ol&gt;, dan &lt;li&gt;
+          dipakai buat bikin daftar atau list.
+        </p>
+
+        <ul>
+          <li>
+            &lt;ul&gt; (Unordered List) dipakai buat bikin daftar yang tidak
+            butuh urutan angka (pakai simbol/bullet).
+          </li>
+          <li>
+            &lt;ol&gt; (Ordered List) dipakai buat daftar yang berurutan
+            (pakai angka atau huruf).
+          </li>
+          <li>
+            &lt;li&gt; (List Item) dipakai buat menuliskan isi atau item di
+            dalam &lt;ul&gt; atau &lt;ol&gt;.
+          </li>
+        </ul>
+
+        <h4>1. Tipe-Tipe Unordered List (&lt;ul&gt;)</h4>
+        <p>
+          Kamu bisa mengubah bentuk simbol bullet menggunakan atribut
+          <code>type</code>:
+        </p>
+
+        <ul>
+          <li><code>disc</code>: Lingkaran hitam pekat (default)</li>
+          <li><code>circle</code>: Lingkaran kosong</li>
+          <li><code>square</code>: Kotak hitam pekat</li>
+        </ul>
+
+        <p>Contoh Kode (Square):</p>
+      <pre>
+        <code>
+          &lt;ul type="square"&gt;
+            &lt;li&gt;Mangga&lt;/li&gt;
+            &lt;li&gt;Jeruk&lt;/li&gt;
+          &lt;/ul&gt;
+        </code>
+      </pre>
+
+        <p>Hasilnya:</p>
+        <ul type="square">
+          <li>Mangga</li>
+          <li>Jeruk</li>
+        </ul>
+
+        <p>Contoh Kode (Circle):</p>
+      <pre>
+        <code>
+          &lt;ul type="circle"&gt;
+            &lt;li&gt;Apel&lt;/li&gt;
+            &lt;li&gt;Anggur&lt;/li&gt;
+          &lt;/ul&gt;
+        </code>
+      </pre>
+
+        <p>Hasilnya:</p>
+        <ul type="circle">
+          <li>Apel</li>
+          <li>Anggur</li>
+        </ul>
+
+        <h4>2. Tipe-Tipe Ordered List (&lt;ol&gt;)</h4>
+        <p>
+          Untuk daftar berurutan, atribut <code>type</code> menentukan jenis
+          penomoran yang digunakan:
+        </p>
+
+        <ul>
+          <li><code>1</code>: Angka biasa (1, 2, 3...)</li>
+          <li><code>a</code>: Huruf kecil (a, b, c...)</li>
+          <li><code>A</code>: Huruf besar (A, B, C...)</li>
+          <li><code>i</code>: Angka romawi kecil (i, ii, iii...)</li>
+          <li><code>I</code>: Angka romawi besar (I, II, III...)</li>
+        </ul>
+
+        <p>Contoh Kode (Angka Romawi Besar):</p>
+      <pre>
+        <code>
+          &lt;ol type="I"&gt;
+            &lt;li&gt;Langkah Pertama&lt;/li&gt;
+            &lt;li&gt;Langkah Kedua&lt;/li&gt;
+          &lt;/ol&gt;
+        </code>
+      </pre>
+
+        <p>Hasilnya:</p>
+        <ol type="I">
+          <li>Langkah Pertama</li>
+          <li>Langkah Kedua</li>
+        </ol>
+
+        <p>Contoh Kode (Huruf Kecil):</p>
+      <pre>
+        <code>
+          &lt;ol type="a"&gt;
+            &lt;li&gt;Pilihan A&lt;/li&gt;
+            &lt;li&gt;Pilihan B&lt;/li&gt;
+          &lt;/ol&gt;
+        </code>
+      </pre>
+
+        <p>Hasilnya:</p>
+        <ol type="a">
+          <li>Pilihan A</li>
+          <li>Pilihan B</li>
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; PPKD JAKARTA PUSAT 2026 - SAKA BAYU</p>
+  </footer>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById('nav-menu').classList.toggle('active')
+    }
+  </script>
+</body>
+
+</html>
