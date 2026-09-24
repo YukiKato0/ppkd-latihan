@@ -293,6 +293,7 @@ section {
 
 #about-me {
   height: 92vh;
+  grid-template-columns: repeat(minmax(300px, 1fr), 2);
   h2 {
     margin-top: 50px;
   }
