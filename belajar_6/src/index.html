@@ -1,0 +1,85 @@
+<!doctype html>
+<html class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="./output.css" rel="stylesheet">
+  <link rel="stylesheet" href="./input.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" />
+</head>
+
+<body class="bg-gray-300">
+  <header>
+    <nav class="w-full fixed bg-white left-0 top-0 shadow-sm border-b border-gray-100 z-10">
+      <div class="max-w-7xl mx-auto py-4 flex justify-between items-center">
+        <a href="" class="w-40 h-10 flex items-center">
+          <img src="https://images.icon-icons.com/2699/PNG/512/tailwindcss_logo_icon_170649.png" alt="logo">
+        </a>
+        <ul class="flex items-center gap-10">
+          <li>
+            <a href="#home" class="flex gap-3 text-red-700 hover:text-red-900"><i class="bi bi-list"></i>Menu</a>
+          </li>
+          <li>
+            <a href="#tentang" class="flex gap-3 hover:text-red-700"><i class="bi bi-mortarboard"></i>Program Studi</a>
+          </li>
+          <li>
+            <a href="" class="flex gap-3 hover:text-red-700"><i class="bi bi-buildings"></i>Tentang Kami</a>
+          </li>
+          <li>
+            <a href="" class="flex gap-3 hover:text-red-700"><i class="bi bi-file-earmark-text"></i>PMB</a>
+          </li>
+
+          <button class="bg-red-500/5 text-red-800 px-4 py-3 border-2 border-red-500">Info Pendaftaran Terbaru</button>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section id="home" class="max-w-7xl mx-auto scroll-mt-16">
+      <div class="h-screen flex flex-col md:flex-row items-center gap-12">
+        <div class="w-full md:w-1/2 background-image">
+          <h2 class="text-4xl font-bold inline-block pb-2 mb-6">Tentang Saya</h2>
+          <p class="text-gray-600 leading-relaxed text-lg mb-4">Saya adalah seorang Junior Web Programmer yang memiliki
+            minat
+            besar dalam pengembangan web dan teknologi terbaru. Saya senang
+            belajar hal-hal baru, terutama dalam bidang AI dan pemrograman
+            web.</p>
+        </div>
+
+        <div class="w-full md:w-1/2 flex justify-center">
+          <img src="https://placehold.net/600x600.png" alt="Foto User"
+            class="w-120 object-cover shadow-2xl border-4 border-blue-100 rotate-7" />
+        </div>
+      </div>
+    </section>
+
+    <section id="tentang" class="bg-red-600 [clip-path:polygon(0_0,100%_0,100%_85%,0_100%)] pb-20">
+      <div class="max-w-7xl mx-auto scroll-mt-16">
+        <div class="min-h-[75vh] flex flex-col md:flex-row items-center gap-12 py-16">
+          <div class="w-full md:w-1/2 flex justify-center">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/UpNl26om9Bg?si=3WnNtO_rVwn9uvf9"
+              title="YouTube video player" frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin" allowfullscreen
+              class="rounded-xl w-full aspect-video h-auto"></iframe>
+          </div>
+
+          <div class="w-full md:w-1/2 background-image text-white">
+            <h2 class="text-4xl font-bold inline-block pb-2 mb-6">About Our Campus</h2>
+            <p class="text-red-100 leading-relaxed text-lg mb-6">Lorem ipsum, dolor sit amet consectetur adipisicing
+              elit. Laudantium a itaque ipsa minus sequi eos voluptates quasi, atque quam omnis totam maxime natus
+              dignissimos magni magnam reiciendis consectetur. Magni, eos?</p>
+            <button
+              class="cursor-pointer px-6 py-3 bg-amber-400 text-slate-950 font-semibold rounded-full hover:bg-amber-300 transition-colors flex gap-3 items-center">Learn
+              More<i class="bi bi-arrow-up-short fs-1 text-xl inline-block rotate-30"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+
+</html>
