@@ -14,23 +14,26 @@
     <nav class="w-full fixed bg-white left-0 top-0 shadow-sm border-b border-gray-100 z-10">
       <div class="max-w-7xl mx-auto py-4 flex justify-between items-center">
         <a href="" class="w-40 h-10 flex items-center">
-          <img src="https://images.icon-icons.com/2699/PNG/512/tailwindcss_logo_icon_170649.png" alt="logo">
+          <img src="./images/LOGO.png" alt="logo">
         </a>
-        <ul class="flex items-center gap-10">
+        <ul class="flex items-center gap-10 font-semibold">
           <li>
-            <a href="#home" class="flex gap-3 text-red-700 hover:text-red-900"><i class="bi bi-list"></i>Menu</a>
+            <a href="#home" class="flex gap-3 text-red-700 hover:text-red-900"><i class="bi bi-list-ul"></i>Menu</a>
           </li>
           <li>
-            <a href="#tentang" class="flex gap-3 hover:text-red-700"><i class="bi bi-mortarboard"></i>Program Studi</a>
+            <a href="#tentang" class="flex gap-3 hover:text-red-700"><i class="bi bi-mortarboard-fill"></i>Program
+              Studi</a>
           </li>
           <li>
-            <a href="" class="flex gap-3 hover:text-red-700"><i class="bi bi-buildings"></i>Tentang Kami</a>
+            <a href="" class="flex gap-3 hover:text-red-700"><i class="bi bi-buildings-fill"></i>Tentang Kami</a>
           </li>
           <li>
-            <a href="" class="flex gap-3 hover:text-red-700"><i class="bi bi-file-earmark-text"></i>PMB</a>
+            <a href="" class="flex gap-3 hover:text-red-700"><i class="bi bi-file-earmark-text-fill"></i>PMB</a>
           </li>
 
-          <button class="bg-red-500/5 text-red-800 px-4 py-3 border-2 border-red-500">Info Pendaftaran Terbaru</button>
+          <button class="cursor-pointer text-[#790d1b] font-bold px-5 py-3 border-3 border-[#790d1b] rounded-lg">Info
+            Pendaftaran
+            Terbaru</button>
         </ul>
       </div>
     </nav>
@@ -55,7 +58,7 @@
       </div>
     </section>
 
-    <section id="tentang" class="bg-red-600 [clip-path:polygon(0_0,100%_0,100%_85%,0_100%)] pb-20">
+    <section id="tentang" class="bg-[#790d1b] [clip-path:polygon(0_0,100%_0,100%_95%,0_100%)] pb-20">
       <div class="max-w-7xl mx-auto scroll-mt-16">
         <div class="min-h-[75vh] flex flex-col md:flex-row items-center gap-12 py-16">
           <div class="w-full md:w-1/2 flex justify-center">
@@ -72,9 +75,196 @@
               elit. Laudantium a itaque ipsa minus sequi eos voluptates quasi, atque quam omnis totam maxime natus
               dignissimos magni magnam reiciendis consectetur. Magni, eos?</p>
             <button
-              class="cursor-pointer px-6 py-3 bg-amber-400 text-slate-950 font-semibold rounded-full hover:bg-amber-300 transition-colors flex gap-3 items-center">Learn
-              More<i class="bi bi-arrow-up-short fs-1 text-xl inline-block rotate-30"></i>
+              class="cursor-pointer px-6 py-3 bg-amber-400 text-slate-950 font-bold rounded-full hover:bg-amber-300 transition-colors flex gap-3 items-center">Learn
+              More<i class="bi bi-chevron-right font-bold"></i>
             </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="portofolio" class="py-24 scroll-mt-16">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-16">
+          <h2 class="font-bold mb-4 text-4xl">Program Studi</h2>
+          <p class="text-lg font-semibold">Proyek yang di bangun tanpa menulis file css external</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-15">
+          <div
+            class="flex gap-7 bg-white rounded-md col-span-12 md:col-span-6 p-7 overflow-hidden shadow-lg hover:shadow-2xl">
+            <div class="overflow-hidden w-25">
+              <img src="https://placehold.net/product-400x400.png" alt="Info Proyek" class="rounded-full">
+            </div>
+            <div class="space-y-3">
+              <h3 class="text-xl font-semibold text-blue-300 mb-7">Program Studi S1 AKUNTANSI</h3>
+              <p class="text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia incidunt
+                voluptatem neque quam vel aliquid aperiam nulla?
+              </p>
+              <button class="cursor-pointer text-blue-300 font-semibold">Learn more</button>
+            </div>
+          </div>
+
+          <div
+            class="flex gap-7 bg-white rounded-md col-span-12 md:col-span-6 p-7 overflow-hidden shadow-lg hover:shadow-2xl">
+            <div class="overflow-hidden w-25">
+              <img src="https://placehold.net/product-400x400.png" alt="Info Proyek" class="rounded-full">
+            </div>
+            <div class="space-y-3">
+              <h3 class="text-xl font-semibold text-blue-300 mb-7">Program Studi S1 AKUNTANSI</h3>
+              <p class="text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia incidunt
+                voluptatem neque quam vel aliquid aperiam nulla?
+              </p>
+              <button class="cursor-pointer text-blue-300 font-semibold">Learn more</button>
+            </div>
+          </div>
+
+          <div
+            class="flex gap-7 bg-white rounded-md col-span-12 md:col-span-6 p-7 overflow-hidden shadow-lg hover:shadow-2xl">
+            <div class="overflow-hidden w-25">
+              <img src="https://placehold.net/product-400x400.png" alt="Info Proyek" class="rounded-full">
+            </div>
+            <div class="space-y-3">
+              <h3 class="text-xl font-semibold text-blue-300 mb-7">Program Studi S1 AKUNTANSI</h3>
+              <p class="text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia incidunt
+                voluptatem neque quam vel aliquid aperiam nulla?
+              </p>
+              <button class="cursor-pointer text-blue-300 font-semibold">Learn more</button>
+            </div>
+          </div>
+
+          <div
+            class="flex gap-7 bg-white rounded-md col-span-12 md:col-span-6 p-7 overflow-hidden shadow-lg hover:shadow-2xl">
+            <div class="overflow-hidden w-25">
+              <img src="https://placehold.net/product-400x400.png" alt="Info Proyek" class="rounded-full">
+            </div>
+            <div class="space-y-3">
+              <h3 class="text-xl font-semibold text-blue-300 mb-7">Program Studi S1 AKUNTANSI</h3>
+              <p class="text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia incidunt
+                voluptatem neque quam vel aliquid aperiam nulla?
+              </p>
+              <button class="cursor-pointer text-blue-300 font-semibold">Learn more</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tentang" class="bg-white [clip-path:polygon(0_5%,100%_0,100%_100%,0_100%)] pb-20">
+      <div class="max-w-7xl mx-auto scroll-mt-16">
+        <div class="min-h-[75vh] flex flex-row md:flex-col py-16">
+          <div class="mb-16 mt-24">
+            <h2 class="font-bold text-4xl">Latest Blogposts</h2>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-15">
+            <div class="bg-white col-span-12 md:col-span-4 space-y-5 overflow-hidden hover:scale-105 transition-all">
+              <div class="overflow-hidden rounded-md">
+                <img src="https://placehold.net/product-400x400.png" alt="Info Proyek" class="w-full object-cover">
+              </div>
+              <div class="space-y-2 pr-10">
+                <h3 class="text-xl font-bold text-[#790d1b] line-clamp-2">Lorem, ipsum dolor.</h3>
+                <p class="line-clamp-3">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptate voluptas
+                  quis recusandae vero soluta minima reiciendis iusto iste? Repellat commodi harum neque iusto eius odit
+                  est impedit doloribus cupiditate ab.</p>
+              </div>
+            </div>
+
+            <div class="bg-white col-span-12 md:col-span-4 space-y-5 overflow-hidden hover:scale-105 transition-all">
+              <div class="overflow-hidden rounded-md">
+                <img src="https://placehold.net/product-400x400.png" alt="Info Proyek" class="w-full object-cover">
+              </div>
+              <div class="space-y-2 pr-10">
+                <h3 class="text-xl font-bold text-[#790d1b] line-clamp-2">Lorem ipsum dolor sit amet consectetur
+                  adipisicing elit. Temporibus, perspiciatis.</h3>
+                <p class="line-clamp-3">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptate voluptas
+                  quis recusandae vero soluta minima reiciendis iusto iste? Repellat commodi harum neque iusto eius odit
+                  est impedit doloribus cupiditate ab.</p>
+              </div>
+            </div>
+
+            <div class="bg-white col-span-12 md:col-span-4 space-y-5 overflow-hidden hover:scale-105 transition-all">
+              <div class="overflow-hidden rounded-md">
+                <img src="https://placehold.net/product-400x400.png" alt="Info Proyek" class="w-full object-cover">
+              </div>
+              <div class="space-y-2 pr-10">
+                <h3 class="text-xl font-bold text-[#790d1b] line-clamp-2">Lorem, ipsum dolor.</h3>
+                <p class="line-clamp-3">Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="kontak" class="bg-[#790d1b]">
+      <div class="max-w-7xl mx-auto px-6 py-24 scroll-mt-16">
+        <div class="flex flex-col lg:flex-row gap-12 justify-center items-stretch max-w-5xl mx-auto">
+          <!-- Kiri -->
+          <div class="w-full lg:w-5/12">
+            <div class="h-full rounded-3xl p-10 shadow-xl text-white bg-linear-to-br from-blue-600 to-cyan-500">
+              <h3 class="text-3xl font-bold mb-8">Get in Touch</h3>
+              <div class="flex items-center gap-4 mb-4">
+                <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur">
+                  <i class="bi bi-house"></i>
+                </div>
+                <span class="text-lg">Jakarta, Indonesia</span>
+              </div>
+              <div class="flex items-center gap-4 mb-4">
+                <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur">
+                  <i class="bi bi-envelope"></i>
+                </div>
+                <span class="text-lg">contoh@example.com</span>
+              </div>
+              <div class="flex items-center gap-4 mb-4">
+                <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur">
+                  <i class="bi bi-telephone"></i>
+                </div>
+                <span class="text-lg">021-123-1234</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Kanan -->
+          <div class="w-full lg:w-7/12">
+            <div class="h-full bg-white rounded-lg p-8 lg:p-10 shadow-xl border border-gray-100">
+              <h3 class="text-3xl font-bold mb-15 text-center">Contact Us</h3>
+              <form action="" method="post" class="space-y-5">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div class="">
+                    <label for="forName" class="block mb-2 font-bold text-gray-600 text-sm">First name</label>
+                    <input id="forName" type="text"
+                      class="w-full bg-gray-50 border border-gray-200 text-gray-800 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#790d1b] focus:border-transparent transition-all rounded-md"
+                      placeholder="Masukan nama anda...">
+                  </div>
+                  <div class="">
+                    <label for="forName" class="block mb-2 font-bold text-gray-600 text-sm">Last name</label>
+                    <input id="forName" type="text"
+                      class="w-full bg-gray-50 border border-gray-200 text-gray-800 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#790d1b] focus:border-transparent transition-all rounded-md"
+                      placeholder="Masukan nama anda...">
+                  </div>
+                </div>
+
+                <div class="">
+                  <label for="forEmail" class="block mb-2 font-bold text-gray-600 text-sm">Email address</label>
+                  <input id="forEmail" type="text"
+                    class="w-full bg-gray-50 border border-gray-200 text-gray-800 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#790d1b] focus:border-transparent transition-all rounded-md"
+                    placeholder="Masukan email anda...">
+                </div>
+
+                <div class="mb-8">
+                  <label for="forPesan" class="block mb-2 font-bold text-gray-600 text-sm">Your message</label>
+                  <textarea id="forPesan" name="pesan"
+                    class="w-full bg-gray-50 border border-gray-200 text-gray-800 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#790d1b] focus:border-transparent transition-all rounded-md"
+                    placeholder="Tuliskan pesan anda..."></textarea>
+                </div>
+
+                <button type="submit"
+                  class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-blue-500/50 cursor-pointer">Kirim
+                  Pesan</button>
+              </form>
+            </div>
           </div>
         </div>
       </div>

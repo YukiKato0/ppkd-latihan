@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <script>
+    // FUNCTION
+    function demoScope() {
+      if (true) {
+        var varVariable = "Saya var (Function Scope)";
+        let letVariable = "Saya let (Block Scope)";
+        const constVariable = "Saya const (Block Scope)";
+      }
+
+      console.log(varVariable);
+      console.log(letVariable);
+      console.log(constVariable);
+    }
+    // demoScope();
+
+
+    // Traditional Function Expression (ESS)
+    const squareESS = function (x) {
+      return x * x;
+    }
+    console.log(squareESS(4));
+
+    // ARROW FUNCTION (ES6+) - EXPLICIT RETURN
+    const squareES6 = (x) => {
+      return x * x;
+    }
+    console.log(squareES6(3));
+
+    // ARROW FUNCTION (ES6+) - IMPLICIT RETURN
+    const squareES6IMPLICIT = (x) => x * x;
+    console.log(squareES6IMPLICIT(2));
+
+    // Penggunaan pada Method Array
+    const fruits = ["apel", "nanas", "durian"];
+    console.log(fruits);
+    const squareFruits = fruits.map((fruit) => {
+      console.log(fruit);
+    });
+
+
+    // Looping For
+    for (let i = 1; i < 5; i++) {
+      console.log("Looping For Index ke", i);
+    }
+
+    // Looping While
+    let indexWhile = 1;
+    while (indexWhile <= 5) {
+      console.log("Looping While Index ke", indexWhile);
+      indexWhile++
+    }
+
+    // Looping do While
+    let indexDoWhile = 1;
+    do {
+      console.log("Looping Do While Index ke", indexDoWhile);
+      indexDoWhile++
+    } while (indexDoWhile <= 5);
+  </script>
+
+</body>
+
+</html>

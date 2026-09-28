@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const pelanggaranBerat = false;
+    const teori = 90;
+    const praktek = 70;
+    const kehadiaran = 90;
+    const name = "Saka Bayu";
+    let hasil = pelanggaranBerat ? "Tidak Lulus" : kehadiaran < 90 ? "Kehadiran Kurang" : teori < 75 ? "Teori Kurang" : praktek < 80 ? "Praktek Kurang" : "Lulus";
+
+    switch (hasil) {
+      case "Lulus":
+        hasil = "Lulus"; break;
+      case "Kehadiran Kurang":
+        hasil = "Kehadiran Kurang"; break;
+      case "Teori Kurang":
+        hasil = "Teori Kurang"; break;
+      case "Praktek Kurang":
+        hasil = "Praktek Kurang"; break;
+      default:
+        hasil = "Tidak Lulus";
+    }
+
+    console.log("Nama:", name);
+    console.log("Rata-rata:", (teori + praktek) / 2);
+    console.log("Status:", hasil)    
+  </script>
+</body>
+
+</html>
