@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dom dan Event | Javascript</title>
+</head>
+
+<body
+  style="background-color: rgb(41, 41, 41); color: azure; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+  <h1>Form Sapaan</h1>
+  <input type="text" id="name" placeholder="Masukan nama...">
+  <button id="simpan">Klik Saya</button>
+  <button id="hapus">hapus</button>
+
+  <p id="hasilSapaan">Hallo Nama :</p>
+  <script>
+    const heading = document.querySelector("h1")
+    const name = document.getElementById("name")
+    const sapaan = document.getElementById("hasilSapaan")
+
+    function prosesSapaan() {
+      sapaan.innerText = `Hallo Nama : ${name.value}`
+    }
+
+    document.getElementById("simpan").addEventListener("click", () => {
+      prosesSapaan()
+      name.value = ""
+    })
+
+    name.addEventListener('keyup', (e) => {
+      if (e.key === "Enter") {
+        prosesSapaan()
+      }
+    })
+
+    document.getElementById('hapus').addEventListener("click", () => {
+      sapaan.innerText = "Hallo Nama :"
+    })
+  </script>
+</body>
+
+</html>

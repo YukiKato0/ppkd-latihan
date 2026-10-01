@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DOM | Todo List</title>
+</head>
+
+<body
+  style="background-color: rgb(35, 35, 35); color: rgb(217, 215, 215); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+  <h1>Daftar Rencana Kerja</h1>
+  <input type="text" id="task" placeholder="Masukan Tugas...">
+
+  <button id="tambah">Tambah</button>
+
+  <ul id="tasks">
+
+  </ul>
+  <script>
+    const inputTask = document.getElementById("task")
+    const listTasks = document.getElementById("tasks")
+
+    function createTask() {
+      const task = inputTask.value
+
+      if (task === "") {
+        alert("Tidak boleh kosong")
+        inputTask.focus();
+        return
+      }
+
+      const li = document.createElement("li")
+      li.innerText = task
+      li.innerHTML = `
+        <span>${task}</span>
+        <button class="btn-remove">Hapus</button>
+      `
+      listTasks.appendChild(li)
+      inputTask.value = ""
+    }
+
+    document.getElementById("tambah").addEventListener("click", () => {
+      createTask()
+    })
+
+    inputTask.addEventListener("keyup", (e) => {
+      if (e.key === "Enter") {
+        createTask()
+      }
+    })
+
+    listTasks.addEventListener("click", (e) => {
+      if (e.target.classList.contains("btn-remove")) {
+        const li = e.target.parentElement
+        li.remove()
+      }
+    })
+  </script>
+</body>
+
+</html>

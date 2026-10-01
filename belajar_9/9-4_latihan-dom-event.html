@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DOM | Event Change & Input</title>
+</head>
+
+<body>
+  <h1>Data Peserta Pelatihan</h1>
+
+  <label for="filterJurusan">Filter Berdasarkan Jurusan: </label>
+  <select id="filterJurusan">
+    <option value="">Semua Jurusan</option>
+    <option value="Web Development">Web Development</option>
+    <option value="Desain Grafis">Desain Grafis</option>
+    <option value="Teknik Jaringan">Teknik Jaringan</option>
+    <option value="Teknik Komputer">Teknik Komputer</option>
+    <option value="Mobile App">Mobile App</option>
+  </select><br><br>
+
+  <label for="cariPeserta">Cari Peserta: </label>
+  <input type="text" id="cariPeserta" placeholder="Cari nama peserta..."><br><br>
+
+  <ul id="listPeserta"></ul>
+
+  <script>
+    const peserta = [
+      { id: 1, name: "Budi", jurusan: "Web Development" },
+      { id: 2, name: "Nisa", jurusan: "Desain Grafis" },
+      { id: 3, name: "Laras", jurusan: "Teknik Jaringan" },
+      { id: 4, name: "Tukiem", jurusan: "Teknik Komputer" },
+      { id: 5, name: "Sambo", jurusan: "Mobile App" },
+    ];
+
+    const filterJurusan = document.getElementById("filterJurusan");
+    const listPeserta = document.getElementById("listPeserta");
+    const cariPeserta = document.getElementById("cariPeserta");
+
+    function renderPeserta(data) {
+      listPeserta.innerHTML = "";
+
+      data.forEach((p) => {
+        const li = document.createElement("li");
+        li.innerText = `${p.name} - Jurusan: ${p.jurusan}`;
+        listPeserta.appendChild(li);
+      });
+    }
+
+    function searchPeserta() {
+      const keyword = cariPeserta.value.toLowerCase().trim();
+      const valueJurusan = filterJurusan.value;
+
+      const hasilFilter = peserta.filter((data) => {
+        const matchName = data.name.toLowerCase().includes(keyword);
+        const matchMajor = (valueJurusan === "") || (data.jurusan === valueJurusan);
+
+        return matchName && matchMajor;
+      });
+
+      renderPeserta(hasilFilter);
+    }
+    renderPeserta(peserta);
+
+    filterJurusan.addEventListener("change", searchPeserta);
+    cariPeserta.addEventListener("input", searchPeserta);
+  </script>
+</body>
+
+</html>
