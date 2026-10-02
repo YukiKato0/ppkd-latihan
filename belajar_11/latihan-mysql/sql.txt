@@ -1,0 +1,12 @@
+Table: sales (id, price, product, quantity)
+a. Hitung total penjualan untuk setiap produk
+SELECT product, SUM(price*quantity) AS total_price FROM sales GROUP BY product;
+
+b. Tampilkan produk dengan total penjualan lebih dari 100 juta
+SELECT product, SUM(price*quantity) AS total_price FROM sales GROUP BY product HAVING total_price > 100000000;
+
+c. Hitung rata-rata harga per produk
+SELECT product, SUM(price * quantity) / SUM(quantity) AS weighted_average_price FROM sales GROUP BY product;
+
+d. Hitung rata-rata penjualan per produk
+SELECT product, AVG(price * quantity) AS avg_revenue_per_sale FROM sales GROUP BY product;
