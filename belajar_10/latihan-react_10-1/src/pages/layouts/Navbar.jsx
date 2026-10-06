@@ -10,6 +10,8 @@ export default function NavbarComponent() {
           <Nav className="me-auto">
             <Nav.Link href="/dashboard">Dashboard</Nav.Link>
             <Nav.Link href="/users">List Users</Nav.Link>
+            <Nav.Link href="/categories">Categories</Nav.Link>
+            <Nav.Link href="/products">Products</Nav.Link>
           </Nav>
 
           <Button variant="outline-danger">Logout</Button>

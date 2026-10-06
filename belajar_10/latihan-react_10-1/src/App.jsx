@@ -4,13 +4,15 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 // Pages
 import LoginPage from './pages/LoginPage'
 import DashboardPage from './pages/DashboardPage'
+import ListUserPage from './pages/ListUserPage'
+import ProductsPage from './pages/ProductsPage'
+import CategoriesPage from './pages/CategoriesPage'
 
 // Layout & Protection
 import MainLayout from './app/MainLayout'
 import ProtectedRoute from './app/ProtectedRoute'
-import ListUser from './components/ListUser'
 
-function App () {
+function App() {
   return (
     <BrowserRouter>
       <Routes>
@@ -20,7 +22,9 @@ function App () {
         <Route element={<ProtectedRoute />}>
           <Route element={<MainLayout />}>
             <Route path='/dashboard' element={<DashboardPage />} />
-            <Route path='/users' element={<ListUser />} />
+            <Route path='/users' element={<ListUserPage />} />
+            <Route path='/categories' element={<CategoriesPage />} />
+            <Route path='/products' element={<ProductsPage />} />
           </Route>
         </Route>
 
