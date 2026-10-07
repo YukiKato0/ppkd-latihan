@@ -1,166 +1,247 @@
-import { useState } from "react";
-import { Card, Form, Badge, Row, Col } from "react-bootstrap";
-import { listUser } from "../mock/listUser";
-import TableFilterHeader from "../components/common/TableFilterHeader";
-import DataTable from "../components/common/DataTable";
-import ActionButtonGroup from "../components/common/ActionButtonGroup";
-import FormModal from "../components/common/FormModal";
+import { useState } from "react"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+
+import { ActionDropdown } from "@/components/common/ActionDropdown"
+import { PageCardHeader } from "@/components/common/PageCardHeader"
+import { SearchInput } from "@/components/common/SearchInput"
+import { listUser as initialListUser } from "../mock/listUser"
 
 export default function ListUserPage() {
-  const [users, setUsers] = useState(listUser);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [roleFilter, setRoleFilter] = useState("All");
+  const [users, setUsers] = useState(initialListUser)
+  const [searchTerm, setSearchTerm] = useState("")
+  const [roleFilter, setRoleFilter] = useState("All")
 
-  const [showModal, setShowModal] = useState(false);
-  const [editingUser, setEditingUser] = useState(null);
-  const [formData, setFormData] = useState({ name: "", email: "", role: "User", status: "Active" });
+  const [showModal, setShowModal] = useState(false)
+  const [editingUser, setEditingUser] = useState(null)
+  const [formData, setFormData] = useState({ name: "", email: "", role: "User", status: "Active" })
 
-  const handleShowModal = (user = null) => {
+  const handleOpenModal = (user = null) => {
     if (user) {
-      setEditingUser(user);
-      setFormData({ name: user.name, email: user.email, role: user.role, status: user.status });
+      setEditingUser(user)
+      setFormData({ name: user.name, email: user.email, role: user.role, status: user.status })
     } else {
-      setEditingUser(null);
-      setFormData({ name: "", email: "", role: "User", status: "Active" });
+      setEditingUser(null)
+      setFormData({ name: "", email: "", role: "User", status: "Active" })
     }
-    setShowModal(true);
-  };
+    setShowModal(true)
+  }
 
   const handleSaveUser = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (editingUser) {
-      setUsers(users.map((u) => (u.id === editingUser.id ? { ...u, ...formData } : u)));
+      setUsers(users.map((u) => (u.id === editingUser.id ? { ...u, ...formData } : u)))
     } else {
-      setUsers([...users, { id: Date.now(), ...formData }]);
+      setUsers([...users, { id: Date.now(), ...formData }])
     }
-    setShowModal(false);
-  };
+    setShowModal(false)
+  }
 
   const handleDeleteUser = (id) => {
     if (window.confirm("Apakah Anda yakin ingin menghapus pengguna ini?")) {
-      setUsers(users.filter((u) => u.id !== id));
+      setUsers(users.filter((u) => u.id !== id))
     }
-  };
+  }
 
   const filteredUsers = users.filter((u) => {
-    const matchesSearch = u.name.toLowerCase().includes(searchTerm.toLowerCase()) || u.email.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesRole = roleFilter === "All" || u.role === roleFilter;
-    return matchesSearch && matchesRole;
-  });
+    const term = searchTerm.toLowerCase()
+    const matchesSearch = u.name.toLowerCase().includes(term) || u.email.toLowerCase().includes(term)
+    const matchesRole = roleFilter === "All" || u.role === roleFilter
+    return matchesSearch && matchesRole
+  })
 
-  const tableHeaders = [
-    { label: "#" },
-    { label: "Nama" },
-    { label: "Email" },
-    { label: "Role" },
-    { label: "Status" },
-    { label: "Aksi", className: "text-end" },
-  ];
+  const getRoleBadgeVariant = (role) => {
+    switch (role) {
+      case "Admin": return "destructive"
+      case "Editor": return "secondary"
+      default: return "outline"
+    }
+  }
 
   return (
-    <Card className="shadow-sm border-0">
-      <Card.Body className="p-4">
-        <TableFilterHeader
-          searchTerm={searchTerm}
-          onSearchChange={setSearchTerm}
-          searchPlaceholder="Cari nama atau email..."
-          filterValue={roleFilter}
-          onFilterChange={setRoleFilter}
-          filterOptions={[
-            { value: "All", label: "Semua Role" },
-            { value: "Admin", label: "Admin" },
-            { value: "Editor", label: "Editor" },
-            { value: "User", label: "User" },
-          ]}
-          addButtonLabel="+ Tambah User"
-          onAddClick={() => handleShowModal()}
+    <div className="space-y-6">
+      <Card className="border-slate-200 shadow-sm dark:border-slate-800">
+        <PageCardHeader
+          title="Manajemen Pengguna"
+          description="Kelola daftar pengguna, perbarui role, dan atur status akses."
+          actionLabel="Tambah User"
+          onAction={() => handleOpenModal()}
         />
 
-        <DataTable
-          headers={tableHeaders}
-          data={filteredUsers}
-          emptyMessage="Tidak ada data pengguna yang ditemukan."
-          renderRow={(user, index) => (
-            <tr key={user.id}>
-              <td>{index + 1}</td>
-              <td className="fw-semibold">{user.name}</td>
-              <td className="text-muted">{user.email}</td>
-              <td>
-                <Badge bg={user.role === "Admin" ? "danger" : user.role === "Editor" ? "warning" : "info"}>
-                  {user.role}
-                </Badge>
-              </td>
-              <td>
-                <Badge bg={user.status === "Active" ? "success" : "secondary"}>
-                  {user.status}
-                </Badge>
-              </td>
-              <td>
-                <ActionButtonGroup
-                  onEdit={() => handleShowModal(user)}
-                  onDelete={() => handleDeleteUser(user.id)}
+        <CardContent className="space-y-4">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <SearchInput
+              placeholder="Cari nama atau email..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <div className="w-full sm:w-48">
+              <Select value={roleFilter} onValueChange={setRoleFilter}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Pilih Role" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="All">Semua Role</SelectItem>
+                  <SelectItem value="Admin">Admin</SelectItem>
+                  <SelectItem value="Editor">Editor</SelectItem>
+                  <SelectItem value="User">User</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-slate-50/50 dark:bg-slate-900/50">
+                  <TableHead className="w-12 text-center">#</TableHead>
+                  <TableHead>Pengguna</TableHead>
+                  <TableHead>Role</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead className="text-right">Aksi</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredUsers.length > 0 ? (
+                  filteredUsers.map((user, index) => (
+                    <TableRow key={user.id}>
+                      <TableCell className="text-center font-medium text-muted-foreground">{index + 1}</TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-3">
+                          <Avatar className="h-8 w-8">
+                            <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user.name}`} />
+                            <AvatarFallback>{user.name.substring(0, 2).toUpperCase()}</AvatarFallback>
+                          </Avatar>
+                          <div className="flex flex-col">
+                            <span className="font-semibold text-slate-900 dark:text-slate-100">{user.name}</span>
+                            <span className="text-xs text-muted-foreground">{user.email}</span>
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={getRoleBadgeVariant(user.role)}>{user.role}</Badge>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <span className={`h-2 w-2 rounded-full ${user.status === "Active" ? "bg-emerald-500" : "bg-slate-300 dark:bg-slate-600"}`} />
+                          <span className={`text-xs font-medium ${user.status === "Active" ? "text-emerald-700 dark:text-emerald-400" : "text-muted-foreground"}`}>
+                            {user.status}
+                          </span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <ActionDropdown
+                          onEdit={() => handleOpenModal(user)}
+                          onDelete={() => handleDeleteUser(user.id)}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={5} className="h-32 text-center text-muted-foreground">
+                      Tidak ada data pengguna yang ditemukan.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Dialog open={showModal} onOpenChange={setShowModal}>
+        <DialogContent className="sm:max-w-md">
+          <form onSubmit={handleSaveUser}>
+            <DialogHeader>
+              <DialogTitle>{editingUser ? "Edit Pengguna" : "Tambah Pengguna Baru"}</DialogTitle>
+              <DialogDescription>Isi rincian informasi pengguna di bawah ini.</DialogDescription>
+            </DialogHeader>
+
+            <div className="grid gap-4 py-4">
+              <div className="space-y-2">
+                <Label htmlFor="name">Nama Lengkap</Label>
+                <Input
+                  id="name"
+                  placeholder="Masukkan nama"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  required
                 />
-              </td>
-            </tr>
-          )}
-        />
-      </Card.Body>
+              </div>
 
-      <FormModal
-        show={showModal}
-        onHide={() => setShowModal(false)}
-        onSubmit={handleSaveUser}
-        title={editingUser ? "Edit User" : "Tambah User Baru"}
-        submitText={editingUser ? "Simpan Perubahan" : "Tambah"}
-      >
-        <Form.Group className="mb-3">
-          <Form.Label>Nama Lengkap</Form.Label>
-          <Form.Control
-            type="text"
-            required
-            placeholder="Masukkan nama"
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            type="email"
-            required
-            placeholder="nama@example.com"
-            value={formData.email}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-          />
-        </Form.Group>
-        <Row className="g-2">
-          <Col md={6}>
-            <Form.Group className="mb-3">
-              <Form.Label>Role</Form.Label>
-              <Form.Select
-                value={formData.role}
-                onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-              >
-                <option value="Admin">Admin</option>
-                <option value="Editor">Editor</option>
-                <option value="User">User</option>
-              </Form.Select>
-            </Form.Group>
-          </Col>
-          <Col md={6}>
-            <Form.Group className="mb-3">
-              <Form.Label>Status</Form.Label>
-              <Form.Select
-                value={formData.status}
-                onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-              >
-                <option value="Active">Active</option>
-                <option value="Inactive">Inactive</option>
-              </Form.Select>
-            </Form.Group>
-          </Col>
-        </Row>
-      </FormModal>
-    </Card>
-  );
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="nama@example.com"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  required
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Role</Label>
+                  <Select value={formData.role} onValueChange={(val) => setFormData({ ...formData, role: val })}>
+                    <SelectTrigger><SelectValue placeholder="Pilih Role" /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Admin">Admin</SelectItem>
+                      <SelectItem value="Editor">Editor</SelectItem>
+                      <SelectItem value="User">User</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Status</Label>
+                  <Select value={formData.status} onValueChange={(val) => setFormData({ ...formData, status: val })}>
+                    <SelectTrigger><SelectValue placeholder="Pilih Status" /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Active">Active</SelectItem>
+                      <SelectItem value="Inactive">Inactive</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </div>
+
+            <DialogFooter>
+              <Button type="button" variant="outline" onClick={() => setShowModal(false)}>Batal</Button>
+              <Button type="submit">{editingUser ? "Simpan Perubahan" : "Tambah"}</Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+    </div>
+  )
 }

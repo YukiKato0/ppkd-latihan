@@ -1,326 +1,244 @@
-import { useState } from "react";
-import { Card, Form, Badge, Row, Col, Image } from "react-bootstrap";
-import { Products, initialCategories } from "../mock/isiProducts";
-import TableFilterHeader from "../components/common/TableFilterHeader";
-import DataTable from "../components/common/DataTable";
-import ActionButtonGroup from "../components/common/ActionButtonGroup";
-import FormModal from "../components/common/FormModal";
+import { Image as ImageIcon, Star } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Textarea } from "@/components/ui/textarea"
+import { ActionDropdown } from "@/components/common/ActionDropdown"
+import { PageCardHeader } from "@/components/common/PageCardHeader"
+import { SearchInput } from "@/components/common/SearchInput"
+import { initialCategories } from "../mock/isiProducts"
+import useProductsPage from "@/hooks/useProductsPage"
+
 
 export default function ProductsPage() {
-  const [products, setProducts] = useState(Products);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("All");
-
-  const [showModal, setShowModal] = useState(false);
-  const [editingProduct, setEditingProduct] = useState(null);
-  const [formData, setFormData] = useState({
-    name: "",
-    category: "minuman",
-    subCategory: "Espresso-Based",
-    price: 0,
-    image: "",
-    description: "",
-    isBestSeller: false,
-  });
-
-  const getSubCategories = (categoryKey) => {
-    const found = initialCategories.find((cat) => cat.id === categoryKey);
-    return found ? found.subCategories : [];
-  };
-
-  const handleShowModal = (product = null) => {
-    if (product) {
-      setEditingProduct(product);
-      setFormData({
-        name: product.name,
-        category: product.category,
-        subCategory: product.subCategory,
-        price: product.price,
-        image: product.image,
-        description: product.description,
-        isBestSeller: product.isBestSeller,
-      });
-    } else {
-      const defaultCategory = initialCategories[0]?.id || "minuman";
-      const defaultSubCategories = getSubCategories(defaultCategory);
-      setEditingProduct(null);
-      setFormData({
-        name: "",
-        category: defaultCategory,
-        subCategory: defaultSubCategories[0] || "",
-        price: "",
-        image: "",
-        description: "",
-        isBestSeller: false,
-      });
-    }
-    setShowModal(true);
-  };
-
-  const handleCategoryChangeInForm = (e) => {
-    const selectedCat = e.target.value;
-    const subs = getSubCategories(selectedCat);
-    setFormData({
-      ...formData,
-      category: selectedCat,
-      subCategory: subs.length > 0 ? subs[0] : "",
-    });
-  };
-
-  const handleSaveProduct = (e) => {
-    e.preventDefault();
-    if (editingProduct) {
-      setProducts(
-        products.map((p) =>
-          p.id === editingProduct.id
-            ? { ...p, ...formData, price: Number(formData.price) }
-            : p
-        )
-      );
-    } else {
-      setProducts([
-        ...products,
-        {
-          id: Date.now(),
-          ...formData,
-          price: Number(formData.price),
-          rating: 0,
-          reviewsCount: 0,
-        },
-      ]);
-    }
-    setShowModal(false);
-  };
-
-  const handleDeleteProduct = (id) => {
-    if (window.confirm("Apakah Anda yakin ingin menghapus produk ini?")) {
-      setProducts(products.filter((p) => p.id !== id));
-    }
-  };
-
-  const filteredProducts = products.filter((product) => {
-    const matchesSearch =
-      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.subCategory.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory =
-      categoryFilter === "All" || product.category === categoryFilter;
-    return matchesSearch && matchesCategory;
-  });
-
-  const formatRupiah = (number) => {
-    return new Intl.NumberFormat("id-ID", {
-      style: "currency",
-      currency: "IDR",
-      maximumFractionDigits: 0,
-    }).format(number);
-  };
-
-  const categoryFilterOptions = [
-    { value: "All", label: "Semua Kategori" },
-    ...initialCategories.map((cat) => ({
-      value: cat.id,
-      label: `${cat.icon} ${cat.label}`,
-    })),
-  ];
-
-  const tableHeaders = [
-    { label: "#" },
-    { label: "Gambar" },
-    { label: "Nama Produk" },
-    { label: "Kategori" },
-    { label: "Harga" },
-    { label: "Status" },
-    { label: "Aksi", className: "text-end" },
-  ];
+  const {
+    handleShowModal,
+    showModal,
+    setShowModal,
+    searchTerm,
+    setSearchTerm,
+    categoryFilter,
+    setCategoryFilter,
+    editingProduct,
+    formData,
+    setFormData,
+    getSubCategories,
+    handleCategoryChangeInForm,
+    handleSaveProduct,
+    handleDeleteProduct,
+    filteredProducts,
+    formatRupiah
+  } = useProductsPage();
 
   return (
-    <Card className="shadow-sm border-0">
-      <Card.Body className="p-4">
-        <TableFilterHeader
-          searchTerm={searchTerm}
-          onSearchChange={setSearchTerm}
-          searchPlaceholder="Cari nama produk, deskripsi, sub-kategori..."
-          filterValue={categoryFilter}
-          onFilterChange={setCategoryFilter}
-          filterOptions={categoryFilterOptions}
-          addButtonLabel="+ Tambah Produk"
-          onAddClick={() => handleShowModal()}
-        />
+    <div className="space-y-6">
+      <PageCardHeader
+        title="Katalog Produk"
+        description="Kelola menu produk, harga, kategori, dan status best seller."
+        actionLabel="Tambah Produk"
+        onAction={() => handleShowModal()}
+      />
 
-        <DataTable
-          headers={tableHeaders}
-          data={filteredProducts}
-          emptyMessage="Tidak ada produk yang ditemukan."
-          renderRow={(product, index) => (
-            <tr key={product.id}>
-              <td>{index + 1}</td>
-              <td>
-                <Image
-                  src={product.image || "https://via.placeholder.com/60"}
-                  alt={product.name}
-                  rounded
-                  style={{ width: "50px", height: "50px", objectFit: "cover" }}
-                />
-              </td>
-              <td>
-                <div className="fw-semibold">{product.name}</div>
-                <small
-                  className="text-muted d-block text-truncate"
-                  style={{ maxWidth: "250px" }}
-                >
-                  {product.description}
-                </small>
-              </td>
-              <td>
-                <Badge bg="secondary" className="me-1">
-                  {product.category}
-                </Badge>
-                <Badge bg="info" text="dark">
-                  {product.subCategory}
-                </Badge>
-              </td>
-              <td className="fw-bold text-success">
-                {formatRupiah(product.price)}
-              </td>
-              <td>
-                {product.isBestSeller ? (
-                  <Badge bg="warning" text="dark">
-                    ⭐ Best Seller
-                  </Badge>
-                ) : (
-                  <Badge bg="light" text="dark" className="border">
-                    Reguler
-                  </Badge>
-                )}
-              </td>
-              <td>
-                <ActionButtonGroup
-                  onEdit={() => handleShowModal(product)}
-                  onDelete={() => handleDeleteProduct(product.id)}
-                />
-              </td>
-            </tr>
-          )}
-        />
-      </Card.Body>
-
-      <FormModal
-        show={showModal}
-        onHide={() => setShowModal(false)}
-        onSubmit={handleSaveProduct}
-        title={editingProduct ? "Edit Produk" : "Tambah Produk Baru"}
-        submitText={editingProduct ? "Simpan Perubahan" : "Tambah Produk"}
-        size="lg"
-      >
-        <Row className="g-3">
-          <Col md={8}>
-            <Form.Group className="mb-3">
-              <Form.Label>Nama Produk</Form.Label>
-              <Form.Control
-                type="text"
-                required
-                placeholder="Masukkan nama produk"
-                value={formData.name}
-                onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
-                }
-              />
-            </Form.Group>
-          </Col>
-
-          <Col md={4}>
-            <Form.Group className="mb-3">
-              <Form.Label>Harga (Rp)</Form.Label>
-              <Form.Control
-                type="number"
-                required
-                min="0"
-                placeholder="25000"
-                value={formData.price}
-                onChange={(e) =>
-                  setFormData({ ...formData, price: e.target.value })
-                }
-              />
-            </Form.Group>
-          </Col>
-
-          <Col md={6}>
-            <Form.Group className="mb-3">
-              <Form.Label>Kategori</Form.Label>
-              <Form.Select
-                value={formData.category}
-                onChange={handleCategoryChangeInForm}
-              >
+      <div className="space-y-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <SearchInput
+            placeholder="Cari nama, deskripsi, sub-kategori..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <div className="w-full sm:w-56">
+            <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+              <SelectTrigger>
+                <SelectValue placeholder="Pilih Kategori" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="All">Semua Kategori</SelectItem>
                 {initialCategories.map((cat) => (
-                  <option key={cat.id} value={cat.id}>
-                    {cat.label}
-                  </option>
+                  <SelectItem key={cat.id} value={cat.id}>
+                    {cat.icon} {cat.label}
+                  </SelectItem>
                 ))}
-              </Form.Select>
-            </Form.Group>
-          </Col>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
 
-          <Col md={6}>
-            <Form.Group className="mb-3">
-              <Form.Label>Sub Kategori</Form.Label>
-              <Form.Select
-                value={formData.subCategory}
-                onChange={(e) =>
-                  setFormData({ ...formData, subCategory: e.target.value })
-                }
-              >
-                {getSubCategories(formData.category).map((sub, idx) => (
-                  <option key={idx} value={sub}>
-                    {sub}
-                  </option>
-                ))}
-              </Form.Select>
-            </Form.Group>
-          </Col>
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-slate-50/50 dark:bg-slate-900/50">
+                <TableHead className="w-12 text-center">#</TableHead>
+                <TableHead className="w-16">Gambar</TableHead>
+                <TableHead>Produk</TableHead>
+                <TableHead>Kategori</TableHead>
+                <TableHead>Harga</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead className="text-right">Aksi</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filteredProducts.length > 0 ? (
+                filteredProducts.map((product, index) => (
+                  <TableRow key={product.id}>
+                    <TableCell className="text-center font-medium text-muted-foreground">{index + 1}</TableCell>
+                    <TableCell>
+                      <div className="h-12 w-12 rounded-lg overflow-hidden border bg-slate-100 flex items-center justify-center shrink-0">
+                        {product.image ? (
+                          <img src={product.image} alt={product.name} className="h-full w-full object-cover" />
+                        ) : (
+                          <ImageIcon className="h-5 w-5 text-slate-400" />
+                        )}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex flex-col">
+                        <span className="font-semibold text-slate-900 dark:text-slate-100">{product.name}</span>
+                        <span className="text-xs text-muted-foreground line-clamp-1 max-w-xs">
+                          {product.description || "Tidak ada deskripsi"}
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex flex-wrap gap-1.5">
+                        <Badge variant="outline" className="capitalize">{product.category}</Badge>
+                        <Badge variant="secondary">{product.subCategory}</Badge>
+                      </div>
+                    </TableCell>
+                    <TableCell className="font-semibold text-emerald-600 dark:text-emerald-400">
+                      {formatRupiah(product.price)}
+                    </TableCell>
+                    <TableCell>
+                      {product.isBestSeller ? (
+                        <Badge className="bg-amber-500 hover:bg-amber-600 text-white gap-1">
+                          <Star className="h-3 w-3 fill-current" /> Best Seller
+                        </Badge>
+                      ) : (
+                        <Badge variant="outline" className="text-muted-foreground">Reguler</Badge>
+                      )}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <ActionDropdown
+                        onEdit={() => handleShowModal(product)}
+                        onDelete={() => handleDeleteProduct(product.id)}
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={7} className="h-32 text-center text-muted-foreground">
+                    Tidak ada produk yang ditemukan.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
 
-          <Col md={12}>
-            <Form.Group className="mb-3">
-              <Form.Label>URL Gambar Produk</Form.Label>
-              <Form.Control
-                type="url"
-                placeholder="https://images.unsplash.com/..."
-                value={formData.image}
-                onChange={(e) =>
-                  setFormData({ ...formData, image: e.target.value })
-                }
-              />
-            </Form.Group>
-          </Col>
+      <Dialog open={showModal} onOpenChange={setShowModal}>
+        <DialogContent className="sm:max-w-xl">
+          <form onSubmit={handleSaveProduct}>
+            <DialogHeader>
+              <DialogTitle>{editingProduct ? "Edit Produk" : "Tambah Produk Baru"}</DialogTitle>
+              <DialogDescription>Masukkan detail produk di bawah ini.</DialogDescription>
+            </DialogHeader>
 
-          <Col md={12}>
-            <Form.Group className="mb-3">
-              <Form.Label>Deskripsi</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                placeholder="Masukkan deskripsi produk..."
-                value={formData.description}
-                onChange={(e) =>
-                  setFormData({ ...formData, description: e.target.value })
-                }
-              />
-            </Form.Group>
-          </Col>
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-4 py-4">
+              <div className="space-y-2 md:col-span-8">
+                <Label htmlFor="name">Nama Produk</Label>
+                <Input
+                  id="name"
+                  placeholder="Masukkan nama produk"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  required
+                />
+              </div>
 
-          <Col md={12}>
-            <Form.Check
-              type="checkbox"
-              id="isBestSeller"
-              label="Tandai sebagai Best Seller ⭐"
-              checked={formData.isBestSeller}
-              onChange={(e) =>
-                setFormData({ ...formData, isBestSeller: e.target.checked })
-              }
-            />
-          </Col>
-        </Row>
-      </FormModal>
-    </Card>
-  );
+              <div className="space-y-2 md:col-span-4">
+                <Label htmlFor="price">Harga (Rp)</Label>
+                <Input
+                  id="price"
+                  type="number"
+                  min="0"
+                  placeholder="25000"
+                  value={formData.price}
+                  onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                  required
+                />
+              </div>
+
+              <div className="space-y-2 md:col-span-6">
+                <Label>Kategori</Label>
+                <Select value={formData.category} onValueChange={handleCategoryChangeInForm}>
+                  <SelectTrigger><SelectValue placeholder="Pilih Kategori" /></SelectTrigger>
+                  <SelectContent>
+                    {initialCategories.map((cat) => (
+                      <SelectItem key={cat.id} value={cat.id}>{cat.label}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2 md:col-span-6">
+                <Label>Sub Kategori</Label>
+                <Select value={formData.subCategory} onValueChange={(val) => setFormData({ ...formData, subCategory: val })}>
+                  <SelectTrigger><SelectValue placeholder="Pilih Sub Kategori" /></SelectTrigger>
+                  <SelectContent>
+                    {getSubCategories(formData.category).map((sub, idx) => (
+                      <SelectItem key={idx} value={sub}>{sub}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2 md:col-span-12">
+                <Label htmlFor="image">URL Gambar Produk</Label>
+                <Input
+                  id="image"
+                  type="url"
+                  placeholder="https://images.unsplash.com/..."
+                  value={formData.image}
+                  onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                />
+              </div>
+
+              <div className="space-y-2 md:col-span-12">
+                <Label htmlFor="description">Deskripsi</Label>
+                <Textarea
+                  id="description"
+                  rows={3}
+                  placeholder="Masukkan deskripsi produk..."
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                />
+              </div>
+
+              <div className="flex items-center space-x-2 md:col-span-12 pt-2">
+                <Checkbox
+                  id="isBestSeller"
+                  checked={formData.isBestSeller}
+                  onCheckedChange={(checked) => setFormData({ ...formData, isBestSeller: Boolean(checked) })}
+                />
+                <Label htmlFor="isBestSeller" className="text-sm font-medium cursor-pointer">
+                  Tandai sebagai Best Seller ⭐
+                </Label>
+              </div>
+            </div>
+
+            <DialogFooter>
+              <Button type="button" variant="outline" onClick={() => setShowModal(false)}>Batal</Button>
+              <Button type="submit">{editingProduct ? "Simpan Perubahan" : "Tambah Produk"}</Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+    </div>
+  )
 }

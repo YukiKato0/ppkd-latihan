@@ -9,7 +9,7 @@ import ProductsPage from './pages/ProductsPage'
 import CategoriesPage from './pages/CategoriesPage'
 
 // Layout & Protection
-import MainLayout from './app/MainLayout'
+import MainLayout from './pages/layouts/MainLayout'
 import ProtectedRoute from './app/ProtectedRoute'
 
 function App() {
