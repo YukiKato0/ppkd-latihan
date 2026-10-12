@@ -1,4 +1,4 @@
 $kind: http-request
-url: http://localhost:5000/api/users
+url: http://localhost:5000/api/user
 method: GET
 order: 2000

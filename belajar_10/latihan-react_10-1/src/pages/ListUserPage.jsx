@@ -1,18 +1,7 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import {
   Select,
   SelectContent,
@@ -32,58 +21,129 @@ import {
 import { ActionDropdown } from "@/components/common/ActionDropdown"
 import { PageCardHeader } from "@/components/common/PageCardHeader"
 import { SearchInput } from "@/components/common/SearchInput"
-import { listUser as initialListUser } from "../mock/listUser"
+import { userService } from '../services/userService';
+import { UserModal } from '../components/pages/UserModal';
 
 export default function ListUserPage() {
-  const [users, setUsers] = useState(initialListUser)
+  const [users, setUsers] = useState([])
   const [searchTerm, setSearchTerm] = useState("")
   const [roleFilter, setRoleFilter] = useState("All")
+  const [error, setError] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   const [showModal, setShowModal] = useState(false)
   const [editingUser, setEditingUser] = useState(null)
-  const [formData, setFormData] = useState({ name: "", email: "", role: "User", status: "Active" })
+  const [formData, setFormData] = useState({ name: "", email: "", password: "", role: "User", is_active: 1 })
+
+  const fetchUsers = async () => {
+    try {
+      setLoading(true);
+      const data = await userService.getAllUsers();
+      setUsers(data);
+    } catch (err) {
+      setError('Gagal memuat data pengguna.');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadUsers = async () => {
+      try {
+        setLoading(true);
+        const data = await userService.getAllUsers();
+
+        if (isMounted) {
+          setUsers(data);
+          setError(null);
+        }
+      } catch (err) {
+        if (isMounted) {
+          setError('Gagal memuat data pengguna.');
+          console.error(err);
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    void loadUsers();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const handleOpenModal = (user = null) => {
     if (user) {
-      setEditingUser(user)
-      setFormData({ name: user.name, email: user.email, role: user.role, status: user.status })
+      setEditingUser(user);
+      setFormData({ name: user.name, email: user.email, password: user.password, role: user.role, is_active: user.is_active });
     } else {
-      setEditingUser(null)
-      setFormData({ name: "", email: "", role: "User", status: "Active" })
+      setEditingUser(null);
+      setFormData({ name: "", email: "", password: "", role: "User", is_active: 1 });
     }
-    setShowModal(true)
-  }
+    setShowModal(true);
+  };
 
-  const handleSaveUser = (e) => {
-    e.preventDefault()
-    if (editingUser) {
-      setUsers(users.map((u) => (u.id === editingUser.id ? { ...u, ...formData } : u)))
-    } else {
-      setUsers([...users, { id: Date.now(), ...formData }])
+  const handleSaveUser = async (e) => {
+    e.preventDefault();
+    try {
+      if (editingUser) {
+        await userService.updateUser(editingUser.id, {
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+          is_active: formData.is_active
+        });
+      } else {
+        await userService.createUser({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password
+        });
+      }
+
+      fetchUsers();
+    } catch (err) {
+      console.error("Gagal menyimpan pengguna:", err);
+    } finally {
+      setShowModal(false);
     }
-    setShowModal(false)
-  }
+  };
 
-  const handleDeleteUser = (id) => {
+  const handleDeleteUser = async (id) => {
     if (window.confirm("Apakah Anda yakin ingin menghapus pengguna ini?")) {
-      setUsers(users.filter((u) => u.id !== id))
+      try {
+        await userService.deleteUser(id);
+        fetchUsers();
+      } catch (err) {
+        console.error("Gagal menghapus pengguna:", err);
+      }
     }
-  }
+  };
 
   const filteredUsers = users.filter((u) => {
-    const term = searchTerm.toLowerCase()
-    const matchesSearch = u.name.toLowerCase().includes(term) || u.email.toLowerCase().includes(term)
-    const matchesRole = roleFilter === "All" || u.role === roleFilter
-    return matchesSearch && matchesRole
-  })
+    const term = searchTerm.toLowerCase();
+    const matchesSearch = u.name.toLowerCase().includes(term) || u.email.toLowerCase().includes(term);
+    const matchesRole = roleFilter === "All" || u.role === roleFilter;
+    return matchesSearch && matchesRole;
+  });
 
   const getRoleBadgeVariant = (role) => {
     switch (role) {
-      case "Admin": return "destructive"
-      case "Editor": return "secondary"
-      default: return "outline"
+      case "Admin": return "destructive";
+      case "Editor": return "secondary";
+      default: return "outline";
     }
-  }
+  };
+
+  if (loading && users.length === 0) return <p className="p-6">Memuat data...</p>;
+  if (error) return <p className="p-6 text-red-500">{error}</p>;
 
   return (
     <div className="space-y-6">
@@ -150,9 +210,9 @@ export default function ListUserPage() {
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
-                          <span className={`h-2 w-2 rounded-full ${user.status === "Active" ? "bg-emerald-500" : "bg-slate-300 dark:bg-slate-600"}`} />
-                          <span className={`text-xs font-medium ${user.status === "Active" ? "text-emerald-700 dark:text-emerald-400" : "text-muted-foreground"}`}>
-                            {user.status}
+                          <span className={`h-2 w-2 rounded-full ${user.is_active === 1 ? "bg-emerald-500" : "bg-slate-300 dark:bg-slate-600"}`} />
+                          <span className={`text-xs font-medium ${user.is_active === 1 ? "text-emerald-700 dark:text-emerald-400" : "text-muted-foreground"}`}>
+                            {user.is_active === 1 ? "Active" : "In Active"}
                           </span>
                         </div>
                       </TableCell>
@@ -177,71 +237,14 @@ export default function ListUserPage() {
         </CardContent>
       </Card>
 
-      <Dialog open={showModal} onOpenChange={setShowModal}>
-        <DialogContent className="sm:max-w-md">
-          <form onSubmit={handleSaveUser}>
-            <DialogHeader>
-              <DialogTitle>{editingUser ? "Edit Pengguna" : "Tambah Pengguna Baru"}</DialogTitle>
-              <DialogDescription>Isi rincian informasi pengguna di bawah ini.</DialogDescription>
-            </DialogHeader>
-
-            <div className="grid gap-4 py-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">Nama Lengkap</Label>
-                <Input
-                  id="name"
-                  placeholder="Masukkan nama"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="nama@example.com"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  required
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Role</Label>
-                  <Select value={formData.role} onValueChange={(val) => setFormData({ ...formData, role: val })}>
-                    <SelectTrigger><SelectValue placeholder="Pilih Role" /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Admin">Admin</SelectItem>
-                      <SelectItem value="Editor">Editor</SelectItem>
-                      <SelectItem value="User">User</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label>Status</Label>
-                  <Select value={formData.status} onValueChange={(val) => setFormData({ ...formData, status: val })}>
-                    <SelectTrigger><SelectValue placeholder="Pilih Status" /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Active">Active</SelectItem>
-                      <SelectItem value="Inactive">Inactive</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-            </div>
-
-            <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setShowModal(false)}>Batal</Button>
-              <Button type="submit">{editingUser ? "Simpan Perubahan" : "Tambah"}</Button>
-            </DialogFooter>
-          </form>
-        </DialogContent>
-      </Dialog>
+      <UserModal
+        open={showModal}
+        onOpenChange={setShowModal}
+        editingUser={editingUser}
+        formData={formData}
+        setFormData={setFormData}
+        onSave={handleSaveUser}
+      />
     </div>
   )
 }

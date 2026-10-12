@@ -12,19 +12,19 @@ const UserModel = {
   },
 
   async create(userData) {
-    const { name, email, password } = userData;
+    const { name, email, password, is_active } = userData;
     const [result] = await db.query(
-      'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
-      [name, email, password]
+      'INSERT INTO users (name, email, password, is_active) VALUES (?, ?, ?, ?)',
+      [name, email, password, is_active ?? 1]
     );
     return result.insertId;
   },
 
   async update(id, userData) {
-    const { name, email } = userData;
+    const { name, email, password, is_active } = userData;
     const [result] = await db.query(
-      'UPDATE users SET name = ?, email = ? WHERE id = ?',
-      [name, email, id]
+      'UPDATE users SET name = ?, email = ?, password = ?, is_active = ? WHERE id = ?',
+      [name, email, password, is_active ?? 1, id]
     );
     return result.affectedRows > 0;
   },

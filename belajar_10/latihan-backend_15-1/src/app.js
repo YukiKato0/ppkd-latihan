@@ -3,13 +3,17 @@ import cors from 'cors'
 
 import authRoutes from './modules/auth/auth.route.js'
 import userRoutes from './modules/users/users.route.js'
+import categoryRoutes from './modules/categories/categories.route.js'
+import productRoutes from './modules/products/products.route.js'
 
 const app = express()
 app.use(cors())
 app.use(express.json())
 
 app.use('/api/auth', authRoutes)
-app.use('/api/users', userRoutes)
+app.use('/api/user', userRoutes)
+app.use('/api/category', categoryRoutes)
+app.use('/api/product', productRoutes)
 
 // Handling route 404
 app.use((req, res) => {

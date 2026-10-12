@@ -1,0 +1,19 @@
+$kind: http-request
+url: http://localhost:5000/api/product
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"name\": \"Risol\",\r
+
+    \    \"description\": \"Enak\",\r
+
+    \    \"price\": 5000,\r
+
+    \    \"stock\": 10,\r
+
+    \    \"category_id\": 1\r
+
+    }"
+order: 4000
