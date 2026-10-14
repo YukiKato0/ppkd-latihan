@@ -1,13 +1,13 @@
 $kind: http-request
-url: http://localhost:5000/api/user/8
-method: PUT
+url: http://localhost:5000/api/user
+method: POST
 body:
   type: json
   content: "{\r
 
-    \  \"name\": \"Rusdii\",\r
+    \  \"name\": \"Rusdiiasdasd\",\r
 
-    \  \"email\": \"rusdii@gmail.com\",\r
+    \  \"email\": \"rusdiiasdsad@gmail.com\",\r
 
     \  \"password\": \"12345678\"\r
 

@@ -21,7 +21,7 @@ import {
 import { ActionDropdown } from "@/components/common/ActionDropdown"
 import { PageCardHeader } from "@/components/common/PageCardHeader"
 import { SearchInput } from "@/components/common/SearchInput"
-import { userService } from '../services/userService';
+import { userService } from '../services/user.service';
 import { UserModal } from '../components/pages/UserModal';
 
 export default function ListUserPage() {

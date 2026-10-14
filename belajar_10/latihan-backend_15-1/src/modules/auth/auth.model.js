@@ -1,0 +1,11 @@
+import db from '../../config/db.js'
+
+
+const AuthModel = {
+  async login(email) {
+    const [rows] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
+    return rows[0];
+  },
+};
+
+export default AuthModel;

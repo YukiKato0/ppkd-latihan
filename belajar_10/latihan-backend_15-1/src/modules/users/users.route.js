@@ -1,8 +1,10 @@
 import { Router } from "express";
 import UserController from './user.controller.js'
+import { verifyToken } from "../../middlewares/middlewares.js";
 
 const router = Router();
 
+router.use(verifyToken);
 router.get('/', UserController.getAll);
 router.get('/:id', UserController.getById);
 router.post('/', UserController.create);

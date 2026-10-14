@@ -1,4 +1,8 @@
 $kind: http-request
 url: http://localhost:5000/api/user
 method: GET
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_1dyw}}"
 order: 2000

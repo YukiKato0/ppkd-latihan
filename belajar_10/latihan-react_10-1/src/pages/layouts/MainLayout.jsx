@@ -4,11 +4,11 @@ import { Sidebar } from './Sidebar'
 import { Navbar } from './Navbar'
 
 export default function MainLayout() {
-  const [isCollapsed, setIsCollapsed] = useState(false)
-  const [isMobileOpen, setIsMobileOpen] = useState(false)
-
   const location = useLocation()
   const navigate = useNavigate()
+
+  const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isMobileOpen, setIsMobileOpen] = useState(false)
 
   const handleLogout = () => {
     localStorage.removeItem('token')

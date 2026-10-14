@@ -9,6 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { PasswordInput } from "@/components/common/PasswordInput"
+import { authService } from "@/services/auth.service"
 
 export default function LoginPage() {
   const navigate = useNavigate()
@@ -30,23 +31,10 @@ export default function LoginPage() {
     setErrorMessage("")
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/login", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password,
-        }),
+      const result = await authService.loginUser({
+        email: formData.email,
+        password: formData.password,
       })
-
-      const result = await res.json()
-
-      if (!res.ok) {
-        throw new Error(result.message || "Email atau password yang Anda masukkan salah.")
-      }
 
       localStorage.setItem("token", result.data.token)
       navigate("/dashboard")

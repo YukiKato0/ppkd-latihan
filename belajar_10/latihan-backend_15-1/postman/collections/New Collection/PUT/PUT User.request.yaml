@@ -1,17 +1,15 @@
 $kind: http-request
-url: http://localhost:5000/api/user/8
+url: http://localhost:5000/api/user/1
 method: PUT
 body:
   type: json
   content: "{\r
 
-    \  \"name\": \"Rusdi\",\r
+    \    \"name\": \"Miraaaa\",\r
 
-    \  \"email\": \"rusdi@gmail.com\",\r
+    \    \"email\": \"mira@gmail.com\",\r
 
-    \  \"password\": \"12345678\",\r
-
-    \  \"is_active\": 0\r
+    \    \"password\": \"$2a$12$4lmnum36pzRRtTdmuLsjl.hRsbVt3.ToRPuXOz28XoFRzHSejJ6y.\"\r
 
     }"
 order: 1000
