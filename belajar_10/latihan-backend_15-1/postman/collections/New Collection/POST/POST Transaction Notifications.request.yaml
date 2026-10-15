@@ -1,0 +1,49 @@
+$kind: http-request
+url: http://localhost:5000/api/transactions/notification
+method: POST
+body:
+  type: json
+  content: "// {\r
+
+    //   \"transaction_time\": \"2026-10-15 12:00:00\",\r
+
+    //   \"transaction_status\": \"settlement\",\r
+
+    //   \"status_message\": \"midtrans payment notification\",\r
+
+    //   \"status_code\": \"200\",\r
+
+    //   \"signature_key\": \"dummy_signature\",\r
+
+    //   \"payment_type\": \"bank_transfer\",\r
+
+    //   \"order_id\": \"TRX-20261015-4099\",\r
+
+    //   \"gross_amount\": \"165000.00\",\r
+
+    //   \"fraud_status\": \"accept\",\r
+
+    //   \"currency\": \"IDR\"\r
+
+    // }\r
+
+    \r
+
+    {\r
+
+    \  \"transaction_time\": \"2026-10-15 12:00:00\",\r
+
+    \  \"transaction_status\": \"expire\",\r
+
+    \  \"status_message\": \"midtrans payment notification\",\r
+
+    \  \"status_code\": \"202\",\r
+
+    \  \"order_id\": \"TRX-20261015-4099\",\r
+
+    \  \"gross_amount\": \"165000.00\",\r
+
+    \  \"currency\": \"IDR\"\r
+
+    }"
+order: 6000

@@ -5,6 +5,72 @@ class TransactionModel {
     return await db.getConnection();
   }
 
+  static async findAllOrders() {
+    const query = `
+      SELECT 
+        o.id,
+        o.order_number,
+        o.user_id,
+        o.payment_method,
+        o.subtotal,
+        o.tax,
+        o.total,
+        o.status,
+        o.snap_token,
+        o.snap_redirect_url,
+        o.create_at,
+        JSON_ARRAYAGG(
+          JSON_OBJECT(
+            'id', od.id,
+            'product_id', od.product_id,
+            'product_name', p.name,
+            'qty', od.qty,
+            'price', od.price
+          )
+        ) AS items
+      FROM orders o
+      LEFT JOIN order_details od ON o.id = od.order_id
+      LEFT JOIN products p ON od.product_id = p.id
+      GROUP BY o.id
+      ORDER BY o.create_at DESC
+    `;
+    const [rows] = await db.query(query);
+    return rows;
+  }
+
+  static async findOrderById(order_id) {
+    const query = `
+      SELECT 
+        o.id,
+        o.order_number,
+        o.user_id,
+        o.payment_method,
+        o.subtotal,
+        o.tax,
+        o.total,
+        o.status,
+        o.snap_token,
+        o.snap_redirect_url,
+        o.create_at,
+        JSON_ARRAYAGG(
+          JSON_OBJECT(
+            'id', od.id,
+            'product_id', od.product_id,
+            'product_name', p.name,
+            'qty', od.qty,
+            'price', od.price
+          )
+        ) AS items
+      FROM orders o
+      LEFT JOIN order_details od ON o.id = od.order_id
+      LEFT JOIN products p ON od.product_id = p.id
+      WHERE o.id = ?
+      GROUP BY o.id
+    `;
+    const [rows] = await db.query(query, [order_id]);
+    return rows[0];
+  }
+
   static async createOrder(connection, orderData) {
     const { order_number, user_id, payment_method, subtotal, tax, total, status = 'pending', snap_token, snap_redirect_url } = orderData;
     const query = `

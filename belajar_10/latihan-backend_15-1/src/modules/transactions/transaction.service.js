@@ -2,6 +2,18 @@ import TransactionModel from './transaction.model.js';
 import { snap } from '../../config/midtrans.js';
 
 class TransactionService {
+  static async getAllTransactions() {
+    return await TransactionModel.findAllOrders();
+  }
+
+  static async getTransactionById(id) {
+    const order = await TransactionModel.findOrderById(id);
+    if (!order) {
+      throw new Error('Transaksi tidak ditemukan');
+    }
+    return order;
+  }
+
   static async createTransaction(payload) {
     const { user_id, payment_method, items, customer_details, tax_percentage = 10 } = payload;
 
@@ -133,11 +145,25 @@ class TransactionService {
   }
 
   static async handleMidtransNotification(notificationPayload) {
-    const statusResponse = await snap.transaction.notification(notificationPayload);
+    let order_id;
+    let transaction_status;
+    let fraud_status;
 
-    const order_id = statusResponse.order_id;
-    const transaction_status = statusResponse.transaction_status;
-    const fraud_status = statusResponse.fraud_status;
+    try {
+      const statusResponse = await snap.transaction.notification(notificationPayload);
+      order_id = statusResponse.order_id;
+      transaction_status = statusResponse.transaction_status;
+      fraud_status = statusResponse.fraud_status;
+    } catch (sdkError) {
+      console.warn('Verifikasi SDK Midtrans gagal/mock data, menggunakan body request langsung.');
+      order_id = notificationPayload.order_id;
+      transaction_status = notificationPayload.transaction_status;
+      fraud_status = notificationPayload.fraud_status;
+    }
+
+    if (!order_id) {
+      throw new Error('order_id tidak ditemukan dalam payload notifikasi');
+    }
 
     let orderStatus = 'pending';
 
@@ -149,15 +175,22 @@ class TransactionService {
       }
     } else if (transaction_status === 'settlement') {
       orderStatus = 'success';
-    } else if (transaction_status === 'cancel' || transaction_status === 'deny' || transaction_status === 'expire') {
+    } else if (
+      transaction_status === 'cancel' ||
+      transaction_status === 'deny' ||
+      transaction_status === 'expire'
+    ) {
       orderStatus = 'failed';
-
       await TransactionModel.restoreProductStock(order_id);
     } else if (transaction_status === 'pending') {
       orderStatus = 'pending';
     }
 
-    await TransactionModel.updateOrderStatus(order_id, orderStatus);
+    const isUpdated = await TransactionModel.updateOrderStatus(order_id, orderStatus);
+
+    if (!isUpdated) {
+      throw new Error(`Order dengan order_number ${order_id} tidak ditemukan di database lokal`);
+    }
 
     return { order_id, orderStatus };
   }

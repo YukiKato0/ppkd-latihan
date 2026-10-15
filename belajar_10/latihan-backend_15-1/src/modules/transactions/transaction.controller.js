@@ -1,6 +1,39 @@
 import TransactionService from './transaction.service.js';
 
 class TransactionController {
+  static async getAll(req, res) {
+    try {
+      const orders = await TransactionService.getAllTransactions();
+      return res.status(200).json({
+        success: true,
+        message: 'Berhasil mengambil seluruh data transaksi',
+        data: orders
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: error.message
+      });
+    }
+  }
+
+  static async getById(req, res) {
+    try {
+      const { id } = req.params;
+      const order = await TransactionService.getTransactionById(id);
+      return res.status(200).json({
+        success: true,
+        message: 'Berhasil mengambil detail transaksi',
+        data: order
+      });
+    } catch (error) {
+      return res.status(404).json({
+        success: false,
+        message: error.message
+      });
+    }
+  }
+
   static async create(req, res) {
     try {
       const { user_id, payment_method, items, customer_details, tax_percentage } = req.body;
