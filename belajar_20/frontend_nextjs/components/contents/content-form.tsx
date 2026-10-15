@@ -6,7 +6,22 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  CONTENT_FORMAT_LABELS,
+  CONTENT_FORMATS,
+  CONTENT_PRIORITIES,
+  CONTENT_PRIORITY_LABELS,
+  type ContentFormat,
+  type ContentPriority,
+} from "@/features/contents/types/content";
 import {
   initialContentFormValues,
   validateContentForm,
@@ -22,7 +37,15 @@ export function ContentForm({ mode, contentId }: { mode: ContentFormMode; conten
   const [notice, setNotice] = useState("");
 
   function updateField(field: keyof ContentFormValues, value: string) {
-    setValues((currentValues) => ({ ...currentValues, [field]: value }));
+    setValues((currentValues) => {
+      if (field === "format_type") {
+        return { ...currentValues, format_type: value as ContentFormat | "" };
+      }
+      if (field === "priority") {
+        return { ...currentValues, priority: value as ContentPriority };
+      }
+      return { ...currentValues, [field]: value };
+    });
     if (field === "title" || field === "channel_id" || field === "format_type") {
       setErrors((currentErrors) => ({ ...currentErrors, [field]: undefined }));
     }
@@ -107,19 +130,61 @@ export function ContentForm({ mode, contentId }: { mode: ContentFormMode; conten
           </div>
           <div className="flex min-w-0 flex-col gap-[7px]">
             <Label htmlFor="content-format-type">Format type</Label>
-            <Input
-              aria-invalid={Boolean(errors.format_type)}
-              aria-describedby={errors.format_type ? "content-format-error" : undefined}
-              autoComplete="off"
-              id="content-format-type"
-              onChange={(event) => updateField("format_type", event.target.value)}
-              placeholder="Format type"
+            <Select
               value={values.format_type}
-              className="h-[42px] rounded-[5px] border-[#d9e0d9] bg-white px-3 text-[12px] text-[#24332b] placeholder:text-[#a3ada5]"
-            />
+              onValueChange={(value) => updateField("format_type", value)}
+            >
+              <SelectTrigger
+                aria-invalid={Boolean(errors.format_type)}
+                aria-describedby={errors.format_type ? "content-format-error" : undefined}
+                id="content-format-type"
+                className="h-[42px] w-full rounded-[5px] border-[#d9e0d9] bg-white text-[12px] text-[#24332b]"
+              >
+                <SelectValue placeholder="Pilih format" />
+              </SelectTrigger>
+              <SelectContent>
+                {CONTENT_FORMATS.map((format) => (
+                  <SelectItem key={format} value={format}>
+                    {CONTENT_FORMAT_LABELS[format]}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
             {errors.format_type && (
               <p className="m-0 text-[10px] leading-[1.4] text-[#a33e37]" id="content-format-error">{errors.format_type}</p>
             )}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4 max-[640px]:grid-cols-1">
+          <div className="flex min-w-0 flex-col gap-[7px]">
+            <Label htmlFor="content-priority">Priority</Label>
+            <Select
+              value={values.priority}
+              onValueChange={(value) => updateField("priority", value)}
+            >
+              <SelectTrigger className="h-[42px] w-full rounded-[5px] border-[#d9e0d9] bg-white text-[12px] text-[#24332b]" id="content-priority">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {CONTENT_PRIORITIES.map((priority) => (
+                  <SelectItem key={priority} value={priority}>
+                    {CONTENT_PRIORITY_LABELS[priority]}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex min-w-0 flex-col gap-[7px]">
+            <Label htmlFor="content-scheduled-date">Scheduled date <span className="ml-[5px] text-[9px] font-normal text-[#8a958d]">Optional</span></Label>
+            <Input
+              id="content-scheduled-date"
+              name="scheduled_date"
+              onChange={(event) => updateField("scheduled_date", event.target.value)}
+              type="date"
+              value={values.scheduled_date}
+              className="h-[42px] rounded-[5px] border-[#d9e0d9] bg-white px-3 text-[12px] text-[#24332b]"
+            />
           </div>
         </div>
 
@@ -136,13 +201,14 @@ export function ContentForm({ mode, contentId }: { mode: ContentFormMode; conten
         </div>
 
         <div className="flex min-w-0 flex-col gap-[7px]">
-          <Label htmlFor="content-script">Script <span className="ml-[5px] text-[9px] font-normal text-[#8a958d]">Optional</span></Label>
+          <Label htmlFor="content-script-draft">Script draft <span className="ml-[5px] text-[9px] font-normal text-[#8a958d]">Optional</span></Label>
           <Textarea
-            id="content-script"
-            onChange={(event) => updateField("script", event.target.value)}
+            id="content-script-draft"
+            name="script_draft"
+            onChange={(event) => updateField("script_draft", event.target.value)}
             placeholder="Add a draft or outline"
             rows={6}
-            value={values.script}
+            value={values.script_draft}
             className="min-h-[88px] resize-y rounded-[5px] border-[#d9e0d9] bg-white px-3 py-[11px] text-[12px] leading-relaxed text-[#24332b] placeholder:text-[#a3ada5]"
           />
         </div>

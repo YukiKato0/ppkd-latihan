@@ -27,6 +27,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import {
+  CONTENT_FORMAT_LABELS,
   CONTENT_STATUSES,
   CONTENT_STATUS_LABELS,
   type ContentStatus,
@@ -51,10 +52,6 @@ import type {
 
 function formatNumber(value: number): string {
   return new Intl.NumberFormat("id-ID").format(value);
-}
-
-function metricSnapshotDate(value: string): string {
-  return value.slice(0, 10);
 }
 
 function statusBadgeClass(status: ContentStatus): string {
@@ -103,7 +100,7 @@ export function ContentDetailPreview({ content }: { content: ContentDetailPrevie
 
     setChecklist((items) => [
       ...items,
-      { id: `local-${Date.now()}`, task, is_completed: false },
+      { id: `local-${Date.now()}`, task_name: task, is_completed: false },
     ]);
     setNewTask("");
     setPreviewMessage("Task ditambahkan ke preview lokal; belum disimpan ke server.");
@@ -126,7 +123,7 @@ export function ContentDetailPreview({ content }: { content: ContentDetailPrevie
     const recordedAt = new Date().toISOString();
     const snapshot: ContentMetricSnapshot = {
       id: `local-${Date.now()}`,
-      recordedAt,
+      recorded_at: recordedAt.slice(0, 10),
       ...values,
     };
 
@@ -175,7 +172,7 @@ export function ContentDetailPreview({ content }: { content: ContentDetailPrevie
           <p className="mb-3 text-[10px] font-bold tracking-[0.14em] text-[#53816c]">CONTENT DETAIL</p>
           <h1 className="m-0 max-w-190 font-serif text-[clamp(31px,3.2vw,42px)] font-normal leading-[1.12] text-[#1d2b24] max-[640px]:text-[34px]">{content.title}</h1>
           <p className="mt-2.5 flex flex-wrap gap-2.25 text-[11px] text-[#728077]">
-            {content.channel.name} <span className="text-[#b3bdb5]" aria-hidden="true">/</span> {content.format_type}
+            {content.channel.handle_name} <span className="text-[#b3bdb5]" aria-hidden="true">/</span> {CONTENT_FORMAT_LABELS[content.format_type]}
           </p>
         </div>
         <div className="flex flex-none items-center gap-2.25 max-[640px]:w-full max-[640px]:justify-between">
@@ -225,7 +222,7 @@ export function ContentDetailPreview({ content }: { content: ContentDetailPrevie
                     className={`flex-1 cursor-pointer py-3 text-[11px] leading-normal ${item.is_completed ? "text-[#8a948d] line-through decoration-[#a8b3aa]" : "text-[#435349]"}`}
                     htmlFor={`checklist-${item.id}`}
                   >
-                    {item.task}
+                    {item.task_name}
                   </label>
                   {item.is_completed && <Check aria-hidden="true" className="flex-none text-[#4c8968]" size={15} />}
                 </li>
@@ -258,7 +255,8 @@ export function ContentDetailPreview({ content }: { content: ContentDetailPrevie
               </Button>
             </div>
             <p className="m-0 text-[11px] leading-[1.7] text-[#55645a]">{content.description}</p>
-            <pre className="mt-3.75 wrap-break-word whitespace-pre-wrap border-l-2 border-[#cbdccb] bg-[#f7f9f6] px-3.5 py-3 font-sans text-[10px] leading-[1.8] text-[#57665c]">{content.script}</pre>
+            <p className="mt-3 text-[10px] text-[#78837b]">Priority: {content.priority} <span aria-hidden="true">·</span> Scheduled: {content.scheduled_date ?? "Not set"}</p>
+            <pre className="mt-3.75 wrap-break-word whitespace-pre-wrap border-l-2 border-[#cbdccb] bg-[#f7f9f6] px-3.5 py-3 font-sans text-[10px] leading-[1.8] text-[#57665c]">{content.script_draft}</pre>
           </section>
 
           {publishedUrl && (
@@ -361,11 +359,11 @@ export function ContentDetailPreview({ content }: { content: ContentDetailPrevie
                 <tbody>
                   {metricHistory.map((snapshot) => (
                     <tr key={snapshot.id}>
-                      <td className="whitespace-nowrap border-t border-[#edf0ed] px-1.5 py-2.25 text-left text-[9px] text-[#536259]"><time dateTime={snapshot.recordedAt}>{metricSnapshotDate(snapshot.recordedAt)}</time></td>
-                      <td className="whitespace-nowrap border-t border-[#edf0ed] px-1.5 py-2.25 text-right text-[9px] text-[#536259]">{formatNumber(snapshot.views)}</td>
-                      <td className="whitespace-nowrap border-t border-[#edf0ed] px-1.5 py-2.25 text-right text-[9px] text-[#536259]">{formatNumber(snapshot.likes)}</td>
-                      <td className="whitespace-nowrap border-t border-[#edf0ed] px-1.5 py-2.25 text-right text-[9px] text-[#536259]">{formatNumber(snapshot.comments)}</td>
-                      <td className="whitespace-nowrap border-t border-[#edf0ed] px-1.5 py-2.25 text-right text-[9px] text-[#536259]">{formatNumber(snapshot.shares)}</td>
+                      <td className="whitespace-nowrap border-t border-[#edf0ed] px-1.5 py-2.25 text-left text-[9px] text-[#536259]"><time dateTime={snapshot.recorded_at}>{snapshot.recorded_at}</time></td>
+                      <td className="whitespace-nowrap border-t border-[#edf0ed] px-1.5 py-2.25 text-right text-[9px] text-[#536259]">{formatNumber(snapshot.views_count)}</td>
+                      <td className="whitespace-nowrap border-t border-[#edf0ed] px-1.5 py-2.25 text-right text-[9px] text-[#536259]">{formatNumber(snapshot.likes_count)}</td>
+                      <td className="whitespace-nowrap border-t border-[#edf0ed] px-1.5 py-2.25 text-right text-[9px] text-[#536259]">{formatNumber(snapshot.comments_count)}</td>
+                      <td className="whitespace-nowrap border-t border-[#edf0ed] px-1.5 py-2.25 text-right text-[9px] text-[#536259]">{formatNumber(snapshot.shares_count)}</td>
                     </tr>
                   ))}
                 </tbody>

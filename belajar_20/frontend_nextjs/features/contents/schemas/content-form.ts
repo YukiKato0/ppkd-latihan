@@ -1,7 +1,17 @@
+import type {
+  ContentFormat,
+  ContentPriority,
+} from "@/features/contents/types/content";
+
 export type ContentFormField = "title" | "channel_id" | "format_type";
-export type ContentFormValues = Record<ContentFormField, string> & {
+export type ContentFormValues = {
+  title: string;
+  channel_id: string;
+  format_type: ContentFormat | "";
   description: string;
-  script: string;
+  script_draft: string;
+  priority: ContentPriority;
+  scheduled_date: string;
 };
 export type ContentFormErrors = Partial<Record<ContentFormField, string>>;
 
@@ -10,7 +20,9 @@ export const initialContentFormValues: ContentFormValues = {
   channel_id: "",
   format_type: "",
   description: "",
-  script: "",
+  script_draft: "",
+  priority: "medium",
+  scheduled_date: "",
 };
 
 export function validateContentForm(

@@ -1,7 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { validateAuthForm } from "../features/auth/schemas/auth-form.ts";
-import { validateContentForm } from "../features/contents/schemas/content-form.ts";
+import {
+  initialContentFormValues,
+  validateContentForm,
+} from "../features/contents/schemas/content-form.ts";
 import {
   initialMetricFormValues,
   sortMetricHistoryNewestFirst,
@@ -9,7 +12,13 @@ import {
   validatePublishedUrl,
 } from "../features/contents/schemas/content-detail.ts";
 import { contentDetailPreview } from "../features/contents/mock/content-detail-preview.ts";
-import { isContentStatus } from "../features/contents/types/content.ts";
+import {
+  CONTENT_FORMATS,
+  CONTENT_PRIORITIES,
+  isContentFormat,
+  isContentPriority,
+  isContentStatus,
+} from "../features/contents/types/content.ts";
 
 test("login and register validation enforce their required fields", () => {
   const validLogin = validateAuthForm({
@@ -35,12 +44,25 @@ test("login and register validation enforce their required fields", () => {
 });
 
 test("content form requires title, channel id, and format type", () => {
+  assert.deepEqual(CONTENT_FORMATS, [
+    "short_video",
+    "long_video",
+    "carousel",
+    "single_post",
+  ]);
+  assert.deepEqual(CONTENT_PRIORITIES, ["low", "medium", "high"]);
+  assert.equal(initialContentFormValues.priority, "medium");
+  assert.equal(initialContentFormValues.script_draft, "");
+  assert.equal(initialContentFormValues.scheduled_date, "");
+
   assert.deepEqual(validateContentForm({
     title: "  ",
     channel_id: "",
     format_type: "",
     description: "optional",
-    script: "optional",
+    script_draft: "optional",
+    priority: "medium",
+    scheduled_date: "",
   }), {
     title: "Judul konten wajib diisi.",
     channel_id: "Channel ID wajib diisi.",
@@ -50,9 +72,11 @@ test("content form requires title, channel id, and format type", () => {
   assert.deepEqual(validateContentForm({
     title: "A valid title",
     channel_id: "channel-1",
-    format_type: "video",
+    format_type: "short_video",
     description: "",
-    script: "",
+    script_draft: "",
+    priority: "high",
+    scheduled_date: "2026-10-30",
   }), {});
 });
 
@@ -67,31 +91,31 @@ test("publication URLs only allow absolute HTTP and HTTPS URLs", () => {
 
 test("metrics accept zero and non-negative safe integers only", () => {
   assert.deepEqual(validateMetricForm({
-    views: "0",
-    likes: "18",
-    comments: "2",
-    shares: "1",
+    views_count: "0",
+    likes_count: "18",
+    comments_count: "2",
+    shares_count: "1",
   }), {});
 
   const invalidMetrics = validateMetricForm({
-    views: "-1",
-    likes: "1.5",
-    comments: "",
-    shares: "9007199254740992",
+    views_count: "-1",
+    likes_count: "1.5",
+    comments_count: "",
+    shares_count: "9007199254740992",
   });
-  assert.deepEqual(Object.keys(invalidMetrics).sort(), ["comments", "likes", "shares", "views"]);
+  assert.deepEqual(Object.keys(invalidMetrics).sort(), ["comments_count", "likes_count", "shares_count", "views_count"]);
   assert.deepEqual(validateMetricForm(initialMetricFormValues), {
-    views: "Views harus berupa bilangan bulat non-negatif.",
-    likes: "Likes harus berupa bilangan bulat non-negatif.",
-    comments: "Comments harus berupa bilangan bulat non-negatif.",
-    shares: "Shares harus berupa bilangan bulat non-negatif.",
+    views_count: "Views harus berupa bilangan bulat non-negatif.",
+    likes_count: "Likes harus berupa bilangan bulat non-negatif.",
+    comments_count: "Comments harus berupa bilangan bulat non-negatif.",
+    shares_count: "Shares harus berupa bilangan bulat non-negatif.",
   });
 });
 
 test("metric history is sorted newest first without mutating its input", () => {
   const snapshots = [
-    { id: "old", recordedAt: "2026-10-08T00:00:00.000Z" },
-    { id: "new", recordedAt: "2026-10-12T00:00:00.000Z" },
+    { id: "old", recorded_at: "2026-10-08" },
+    { id: "new", recorded_at: "2026-10-12" },
   ];
 
   assert.deepEqual(sortMetricHistoryNewestFirst(snapshots).map(({ id }) => id), ["new", "old"]);
@@ -101,6 +125,10 @@ test("metric history is sorted newest first without mutating its input", () => {
 test("lifecycle status guard and local preview fixture stay within the contract", () => {
   assert.equal(isContentStatus("published"), true);
   assert.equal(isContentStatus("archived"), false);
+  assert.equal(isContentFormat("short_video"), true);
+  assert.equal(isContentFormat("reel"), false);
+  assert.equal(isContentPriority("medium"), true);
+  assert.equal(isContentPriority("urgent"), false);
   assert.equal(contentDetailPreview.id, "demo-42");
   assert.equal(contentDetailPreview.status, "editing");
 });

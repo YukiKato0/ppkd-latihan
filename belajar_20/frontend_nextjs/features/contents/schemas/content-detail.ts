@@ -5,24 +5,24 @@ export type MetricFormValues = Record<MetricField, string>;
 export type MetricFormErrors = Partial<Record<MetricField, string>>;
 
 export const METRIC_FIELDS: MetricField[] = [
-  "views",
-  "likes",
-  "comments",
-  "shares",
+  "views_count",
+  "likes_count",
+  "comments_count",
+  "shares_count",
 ];
 
 export const METRIC_FIELD_LABELS: Record<MetricField, string> = {
-  views: "Views",
-  likes: "Likes",
-  comments: "Comments",
-  shares: "Shares",
+  views_count: "Views",
+  likes_count: "Likes",
+  comments_count: "Comments",
+  shares_count: "Shares",
 };
 
 export const initialMetricFormValues: MetricFormValues = {
-  views: "",
-  likes: "",
-  comments: "",
-  shares: "",
+  views_count: "",
+  likes_count: "",
+  comments_count: "",
+  shares_count: "",
 };
 
 export function validatePublishedUrl(value: string): boolean {
@@ -52,10 +52,10 @@ export function validateMetricForm(values: MetricFormValues): MetricFormErrors {
   return errors;
 }
 
-export function sortMetricHistoryNewestFirst<T extends { recordedAt: string }>(
+export function sortMetricHistoryNewestFirst<T extends { recorded_at: string }>(
   snapshots: readonly T[]
 ): T[] {
   return [...snapshots].sort((first, second) =>
-    second.recordedAt.localeCompare(first.recordedAt)
+    second.recorded_at.localeCompare(first.recorded_at)
   );
 }
