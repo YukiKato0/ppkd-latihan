@@ -1,0 +1,37 @@
+$kind: http-request
+url: http://localhost:5000/api/transactions
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"user_id\": 1,\r
+
+    \  \"payment_method\": \"MIDTRANS\",\r
+
+    \  \"tax_percentage\": 10,\r
+
+    \  \"customer_details\": {\r
+
+    \    \"first_name\": \"Budi\",\r
+
+    \    \"email\": \"budi@example.com\",\r
+
+    \    \"phone\": \"081234567890\"\r
+
+    \  },\r
+
+    \  \"items\": [\r
+
+    \    {\r
+
+    \      \"product_id\": 3,\r
+
+    \      \"qty\": 1\r
+
+    \    }\r
+
+    \  ]\r
+
+    }"
+order: 5000

@@ -21,7 +21,7 @@ async function ContentDetailRoute({ params }: { params: Promise<{ id: string }> 
 
 export default function ContentDetailPage({ params }: { params: Promise<{ id: string }> }) {
   return (
-    <Suspense fallback={<div className="detail-loading-state" role="status">Loading content detail</div>}>
+    <Suspense fallback={<div className="py-9 text-xs text-[#68746e]" role="status">Loading content detail</div>}>
       <ContentDetailRoute params={params} />
     </Suspense>
   );

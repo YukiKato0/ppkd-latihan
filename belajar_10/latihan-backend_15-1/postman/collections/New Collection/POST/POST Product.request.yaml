@@ -5,15 +5,19 @@ body:
   type: json
   content: "{\r
 
-    \    \"name\": \"Risol\",\r
+    \    \"name\": \"Roti Lapis\",\r
 
     \    \"description\": \"Enak\",\r
 
-    \    \"price\": 5000,\r
+    \    \"price\": 1000,\r
 
     \    \"stock\": 10,\r
 
     \    \"category_id\": 1\r
 
     }"
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_0nbr}}"
 order: 4000

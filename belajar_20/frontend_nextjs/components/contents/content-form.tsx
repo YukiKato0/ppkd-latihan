@@ -43,12 +43,12 @@ export function ContentForm({ mode, contentId }: { mode: ContentFormMode; conten
 
   if (mode === "edit") {
     return (
-      <Alert className="content-api-notice content-edit-blocked">
+      <Alert className="mt-0 flex flex-col gap-[10px] rounded-[7px] border-[#e8dfc2] bg-[#f8f6ed] text-[#65552e] [&_[data-slot=alert-title]]:text-[11px] [&_[data-slot=alert-title]]:font-semibold [&_[data-slot=alert-description]]:text-[10px] [&_[data-slot=alert-description]]:leading-normal [&_[data-slot=alert-description]]:text-[#7b7155]">
         <AlertTitle>Content belum dapat dimuat</AlertTitle>
         <AlertDescription>
           Record {contentId} belum tersedia dari API. Form edit dan aksi simpan dinonaktifkan agar data tidak tertimpa.
         </AlertDescription>
-        <Button asChild className="content-back-button" variant="outline">
+        <Button asChild className="mt-[3px] self-start rounded-[5px] bg-white text-[10px]" variant="outline">
           <Link href="/contents">Back to content</Link>
         </Button>
       </Alert>
@@ -56,8 +56,8 @@ export function ContentForm({ mode, contentId }: { mode: ContentFormMode; conten
   }
 
   return (
-    <div className="content-form-layout">
-      <Alert className="content-api-notice">
+    <div className="flex flex-col gap-4">
+      <Alert className="m-0 rounded-[7px] border-[#e8dfc2] bg-[#f8f6ed] text-[#65552e] [&_[data-slot=alert-title]]:text-[11px] [&_[data-slot=alert-title]]:font-semibold [&_[data-slot=alert-description]]:text-[10px] [&_[data-slot=alert-description]]:leading-normal [&_[data-slot=alert-description]]:text-[#7b7155]">
         <AlertTitle>Channel directory is not connected</AlertTitle>
         <AlertDescription>
           Isi channel ID sementara. Format ini belum diverifikasi terhadap kontrak backend.
@@ -65,14 +65,14 @@ export function ContentForm({ mode, contentId }: { mode: ContentFormMode; conten
       </Alert>
 
       {notice && (
-        <Alert className="content-form-notice" role="status">
+        <Alert className="m-0 rounded-[7px] border-[#d5e4d4] bg-[#f2f6ef] text-[#345642] [&_[data-slot=alert-description]]:text-[#64776a]" role="status">
           <AlertTitle>Belum tersimpan</AlertTitle>
           <AlertDescription>{notice}</AlertDescription>
         </Alert>
       )}
 
-      <form className="content-form" noValidate onSubmit={handleSubmit}>
-        <div className="content-form-field">
+      <form className="flex flex-col gap-5 rounded-lg border border-[#e0e7e0] bg-[rgb(255_255_255/90%)] p-[25px] max-[640px]:gap-4 max-[640px]:p-[17px]" noValidate onSubmit={handleSubmit}>
+        <div className="flex min-w-0 flex-col gap-[7px]">
           <Label htmlFor="content-title">Title</Label>
           <Input
             aria-invalid={Boolean(errors.title)}
@@ -83,12 +83,13 @@ export function ContentForm({ mode, contentId }: { mode: ContentFormMode; conten
             onChange={(event) => updateField("title", event.target.value)}
             placeholder="Give this idea a working title"
             value={values.title}
+            className="h-[42px] rounded-[5px] border-[#d9e0d9] bg-white px-3 text-[12px] text-[#24332b] placeholder:text-[#a3ada5]"
           />
-          {errors.title && <p className="content-field-error" id="content-title-error">{errors.title}</p>}
+          {errors.title && <p className="m-0 text-[10px] leading-[1.4] text-[#a33e37]" id="content-title-error">{errors.title}</p>}
         </div>
 
-        <div className="content-form-grid">
-          <div className="content-form-field">
+        <div className="grid grid-cols-2 gap-4 max-[640px]:grid-cols-1">
+          <div className="flex min-w-0 flex-col gap-[7px]">
             <Label htmlFor="content-channel-id">Channel ID</Label>
             <Input
               aria-invalid={Boolean(errors.channel_id)}
@@ -98,12 +99,13 @@ export function ContentForm({ mode, contentId }: { mode: ContentFormMode; conten
               onChange={(event) => updateField("channel_id", event.target.value)}
               placeholder="Channel ID"
               value={values.channel_id}
+              className="h-[42px] rounded-[5px] border-[#d9e0d9] bg-white px-3 text-[12px] text-[#24332b] placeholder:text-[#a3ada5]"
             />
             {errors.channel_id && (
-              <p className="content-field-error" id="content-channel-error">{errors.channel_id}</p>
+              <p className="m-0 text-[10px] leading-[1.4] text-[#a33e37]" id="content-channel-error">{errors.channel_id}</p>
             )}
           </div>
-          <div className="content-form-field">
+          <div className="flex min-w-0 flex-col gap-[7px]">
             <Label htmlFor="content-format-type">Format type</Label>
             <Input
               aria-invalid={Boolean(errors.format_type)}
@@ -113,38 +115,41 @@ export function ContentForm({ mode, contentId }: { mode: ContentFormMode; conten
               onChange={(event) => updateField("format_type", event.target.value)}
               placeholder="Format type"
               value={values.format_type}
+              className="h-[42px] rounded-[5px] border-[#d9e0d9] bg-white px-3 text-[12px] text-[#24332b] placeholder:text-[#a3ada5]"
             />
             {errors.format_type && (
-              <p className="content-field-error" id="content-format-error">{errors.format_type}</p>
+              <p className="m-0 text-[10px] leading-[1.4] text-[#a33e37]" id="content-format-error">{errors.format_type}</p>
             )}
           </div>
         </div>
 
-        <div className="content-form-field">
-          <Label htmlFor="content-description">Description <span>Optional</span></Label>
+        <div className="flex min-w-0 flex-col gap-[7px]">
+          <Label htmlFor="content-description">Description <span className="ml-[5px] text-[9px] font-normal text-[#8a958d]">Optional</span></Label>
           <Textarea
             id="content-description"
             onChange={(event) => updateField("description", event.target.value)}
             placeholder="What is this content about?"
             rows={3}
             value={values.description}
+            className="min-h-[88px] resize-y rounded-[5px] border-[#d9e0d9] bg-white px-3 py-[11px] text-[12px] leading-relaxed text-[#24332b] placeholder:text-[#a3ada5]"
           />
         </div>
 
-        <div className="content-form-field">
-          <Label htmlFor="content-script">Script <span>Optional</span></Label>
+        <div className="flex min-w-0 flex-col gap-[7px]">
+          <Label htmlFor="content-script">Script <span className="ml-[5px] text-[9px] font-normal text-[#8a958d]">Optional</span></Label>
           <Textarea
             id="content-script"
             onChange={(event) => updateField("script", event.target.value)}
             placeholder="Add a draft or outline"
             rows={6}
             value={values.script}
+            className="min-h-[88px] resize-y rounded-[5px] border-[#d9e0d9] bg-white px-3 py-[11px] text-[12px] leading-relaxed text-[#24332b] placeholder:text-[#a3ada5]"
           />
         </div>
 
-        <div className="content-form-actions">
+        <div className="mt-[3px] flex justify-end gap-[9px] border-t border-[#e8ede8] pt-[18px] max-[640px]:flex-col-reverse">
           <Button asChild variant="outline"><Link href="/contents">Cancel</Link></Button>
-          <Button className="content-create-button" type="submit">Validate content</Button>
+          <Button className="min-h-[39px] rounded-[5px] bg-[#1c644c] px-[13px] text-[11px] font-semibold text-white hover:bg-[#174f3d] max-[640px]:w-full" type="submit">Validate content</Button>
         </div>
       </form>
     </div>

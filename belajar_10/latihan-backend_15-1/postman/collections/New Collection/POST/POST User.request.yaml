@@ -12,4 +12,8 @@ body:
     \  \"password\": \"12345678\"\r
 
     }"
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_0nbr}}"
 order: 2000
