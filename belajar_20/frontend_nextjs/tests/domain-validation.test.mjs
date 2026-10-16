@@ -2,6 +2,17 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { validateAuthForm } from "../features/auth/schemas/auth-form.ts";
 import {
+  initialChannelFormValues,
+  validateChannelForm,
+} from "../features/channels/schemas/channel-form.ts";
+import { channelPreviewRecords } from "../features/channels/mock/channel-preview.ts";
+import {
+  clearSession,
+  createSession,
+  getSession,
+  isAuthenticated,
+} from "../lib/auth/session.ts";
+import {
   initialContentFormValues,
   validateContentForm,
 } from "../features/contents/schemas/content-form.ts";
@@ -131,4 +142,50 @@ test("lifecycle status guard and local preview fixture stay within the contract"
   assert.equal(isContentPriority("urgent"), false);
   assert.equal(contentDetailPreview.id, "demo-42");
   assert.equal(contentDetailPreview.status, "editing");
+});
+
+test("channel form follows allowed platform values and handle_name limits", () => {
+  assert.deepEqual(validateChannelForm({
+    platform: "",
+    handle_name: "",
+  }), {
+    platform: "Pilih platform channel yang tersedia.",
+    handle_name: "Handle channel wajib diisi.",
+  });
+
+  assert.deepEqual(validateChannelForm({
+    platform: "youtube",
+    handle_name: "@techcreator",
+  }), {});
+
+  assert.deepEqual(validateChannelForm({
+    platform: "facebook",
+    handle_name: "x".repeat(101),
+  }), {
+    platform: "Pilih platform channel yang tersedia.",
+    handle_name: "Handle channel maksimal 100 karakter.",
+  });
+
+  assert.equal(initialChannelFormValues.handle_name, "");
+  assert.equal(channelPreviewRecords[0].handle_name, "@framestudio");
+});
+
+test("session helper tracks auth state without persisting secrets", () => {
+  clearSession();
+  assert.equal(isAuthenticated(), false);
+  assert.equal(getSession(), null);
+
+  const session = createSession({
+    email: "creator@example.com",
+    role: "creator",
+    name: "Creator",
+  });
+
+  assert.equal(isAuthenticated(), true);
+  assert.deepEqual(getSession(), session);
+  assert.equal(typeof session.createdAt, "string");
+
+  clearSession();
+  assert.equal(isAuthenticated(), false);
+  assert.equal(getSession(), null);
 });

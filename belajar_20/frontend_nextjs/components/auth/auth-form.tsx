@@ -1,12 +1,16 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
-import { ArrowRight, Eye, EyeOff } from "lucide-react";
+import { ArrowRight, CheckCircle2, CircleAlert, Eye, EyeOff, Loader2 } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { createSession } from "@/lib/auth/session";
+import { getErrorMessage } from "@/lib/api/errors";
+import { loginUser, registerUser } from "@/features/auth/services/auth-service";
 import {
   initialAuthFormValues,
   validateAuthForm,
@@ -17,31 +21,100 @@ import {
 } from "@/features/auth/schemas/auth-form";
 
 export function AuthForm({ mode }: { mode: AuthMode }) {
+  const router = useRouter();
   const isRegister = mode === "register";
+
   const [values, setValues] = useState(initialAuthFormValues);
   const [errors, setErrors] = useState<AuthFieldErrors>({});
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [notice, setNotice] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   function updateField(field: AuthField, value: string) {
     setValues((currentValues: AuthFormValues) => ({ ...currentValues, [field]: value }));
     setErrors((currentErrors) => ({ ...currentErrors, [field]: undefined }));
-    setNotice("");
+    setErrorMessage("");
+    setSuccessMessage("");
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setErrorMessage("");
+    setSuccessMessage("");
+
     const nextErrors = validateAuthForm(values, mode);
     setErrors(nextErrors);
 
     if (Object.keys(nextErrors).length > 0) {
-      setNotice("");
       return;
     }
 
-    setNotice(
-      "Data sudah valid, tetapi belum dikirim. Integrasi API auth dan session menunggu kontrak backend.",
-    );
+    setIsSubmitting(true);
+
+    try {
+      if (isRegister) {
+        const response = await registerUser({
+          name: values.name.trim(),
+          email: values.email.trim(),
+          password: values.password,
+        });
+
+        // Store session if user or token is provided
+        const user = response.user || {
+          name: values.name.trim(),
+          email: values.email.trim(),
+          role: "creator",
+        };
+
+        createSession({
+          name: user.name || values.name.trim(),
+          email: user.email || values.email.trim(),
+          role: user.role || "creator",
+          token: response.token,
+        });
+
+        setSuccessMessage("Akun berhasil dibuat. Mengalihkan ke workspace...");
+        setTimeout(() => {
+          router.push("/contents");
+        }, 800);
+      } else {
+        const response = await loginUser({
+          email: values.email.trim(),
+          password: values.password,
+        });
+
+        const user = response.user || {
+          name: "Creator",
+          email: values.email.trim(),
+          role: "creator",
+        };
+
+        createSession({
+          name: user.name || "Creator",
+          email: user.email || values.email.trim(),
+          role: user.role || "creator",
+          token: response.token,
+        });
+
+        setSuccessMessage("Berhasil masuk. Mengalihkan ke workspace...");
+        setTimeout(() => {
+          router.push("/contents");
+        }, 500);
+      }
+    } catch (err: unknown) {
+      setIsSubmitting(false);
+      const msg = getErrorMessage(err, "Gagal memproses permintaan autentikasi.");
+      setErrorMessage(msg);
+
+      // Support QA Test Case TC-01: "Email already taken"
+      if (msg.toLowerCase().includes("email already taken") || msg.toLowerCase().includes("sudah terdaftar")) {
+        setErrors((prev) => ({
+          ...prev,
+          email: msg,
+        }));
+      }
+    }
   }
 
   return (
@@ -56,10 +129,19 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
         </p>
       </div>
 
-      {notice && (
+      {errorMessage && (
+        <Alert className="mb-5 -mt-3 rounded-md border-[#ebc2bf] bg-[#fbf2f1] text-[11px] leading-normal text-[#8c2a24] **:data-[slot=alert-title]:text-[11px] **:data-[slot=alert-title]:font-semibold **:data-[slot=alert-description]:text-[10px] **:data-[slot=alert-description]:text-[#8c2a24]" role="alert">
+          <CircleAlert aria-hidden="true" className="size-4 text-[#bf382f]" />
+          <AlertTitle>Autentikasi Gagal</AlertTitle>
+          <AlertDescription>{errorMessage}</AlertDescription>
+        </Alert>
+      )}
+
+      {successMessage && (
         <Alert className="mb-5 -mt-3 rounded-md border-[#d5e4d4] bg-[#f2f6ef] text-[11px] leading-normal text-[#345642] **:data-[slot=alert-title]:text-[11px] **:data-[slot=alert-title]:font-semibold **:data-[slot=alert-description]:text-[10px] **:data-[slot=alert-description]:text-[#64776a]" role="status">
-          <AlertTitle>Belum terhubung ke server</AlertTitle>
-          <AlertDescription>{notice}</AlertDescription>
+          <CheckCircle2 aria-hidden="true" className="size-4 text-[#358257]" />
+          <AlertTitle>Sukses</AlertTitle>
+          <AlertDescription>{successMessage}</AlertDescription>
         </Alert>
       )}
 
@@ -71,6 +153,7 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
               autoComplete="name"
               id="name"
               name="name"
+              disabled={isSubmitting}
               aria-invalid={Boolean(errors.name)}
               aria-describedby={errors.name ? "name-error" : undefined}
               onChange={(event) => updateField("name", event.target.value)}
@@ -89,6 +172,7 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
             name="email"
             type="email"
             inputMode="email"
+            disabled={isSubmitting}
             aria-invalid={Boolean(errors.email)}
             aria-describedby={errors.email ? "email-error" : undefined}
             onChange={(event) => updateField("email", event.target.value)}
@@ -109,6 +193,7 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
               id="password"
               name="password"
               type={isPasswordVisible ? "text" : "password"}
+              disabled={isSubmitting}
               aria-invalid={Boolean(errors.password)}
               aria-describedby={errors.password ? "password-error" : undefined}
               onChange={(event) => updateField("password", event.target.value)}
@@ -123,6 +208,7 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
               size="icon"
               type="button"
               variant="ghost"
+              disabled={isSubmitting}
             >
               {isPasswordVisible ? <EyeOff aria-hidden="true" /> : <Eye aria-hidden="true" />}
             </Button>
@@ -140,6 +226,7 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
               id="confirmPassword"
               name="confirmPassword"
               type={isPasswordVisible ? "text" : "password"}
+              disabled={isSubmitting}
               aria-invalid={Boolean(errors.confirmPassword)}
               aria-describedby={errors.confirmPassword ? "confirm-password-error" : undefined}
               onChange={(event) => updateField("confirmPassword", event.target.value)}
@@ -155,9 +242,18 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
           </div>
         )}
 
-        <Button className="mt-0.75 h-11.25 justify-between rounded-[5px] bg-[#1c644c] px-3.75 text-[12px] font-semibold text-white hover:bg-[#174f3d]" type="submit" size="lg">
-          <span>{isRegister ? "Create account" : "Continue to studio"}</span>
-          <ArrowRight aria-hidden="true" data-icon="inline-end" />
+        <Button
+          className="mt-0.75 h-11.25 justify-between rounded-[5px] bg-[#1c644c] px-3.75 text-[12px] font-semibold text-white hover:bg-[#174f3d] disabled:opacity-60"
+          type="submit"
+          size="lg"
+          disabled={isSubmitting}
+        >
+          <span>{isSubmitting ? "Processing..." : isRegister ? "Create account" : "Continue to studio"}</span>
+          {isSubmitting ? (
+            <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+          ) : (
+            <ArrowRight aria-hidden="true" data-icon="inline-end" />
+          )}
         </Button>
       </form>
 

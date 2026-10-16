@@ -13,24 +13,50 @@ export type ContentMetricValues = {
 };
 
 export type ContentMetricSnapshot = ContentMetricValues & {
-  id: string;
+  id: string | number;
   recorded_at: string;
 };
 
 export type ChecklistPreviewItem = {
-  id: string;
+  id: string | number;
+  content_id?: string | number;
   task_name: string;
   is_completed: boolean;
+  created_at?: string;
+};
+
+export type ContentChannelRef = {
+  id: string | number;
+  platform: ChannelPlatform;
+  handle_name: string;
+};
+
+export type ContentItem = {
+  id: string | number;
+  user_id?: string | number;
+  channel_id: string | number;
+  channel?: ContentChannelRef;
+  title: string;
+  description?: string | null;
+  script_draft?: string | null;
+  format_type: ContentFormat;
+  status: ContentStatus;
+  priority: ContentPriority;
+  scheduled_date?: string | null;
+  published_date?: string | null;
+  published_url?: string | null;
+  created_at?: string;
+  updated_at?: string;
+  checklists_count?: number;
+  completed_checklists_count?: number;
 };
 
 export type ContentDetailPreviewRecord = {
-  id: string;
+  id: string | number;
+  user_id?: string | number;
+  channel_id?: string | number;
   title: string;
-  channel: {
-    id: string;
-    platform: ChannelPlatform;
-    handle_name: string;
-  };
+  channel?: ContentChannelRef;
   format_type: ContentFormat;
   description: string;
   script_draft: string;
@@ -38,7 +64,23 @@ export type ContentDetailPreviewRecord = {
   scheduled_date: string | null;
   published_date: string | null;
   status: ContentStatus;
-  published_url?: string;
+  published_url?: string | null;
   checklists: ChecklistPreviewItem[];
   metrics: ContentMetricSnapshot[];
+};
+
+export type CreateContentPayload = {
+  title: string;
+  channel_id: string | number;
+  format_type: ContentFormat;
+  description?: string;
+  script_draft?: string;
+  priority?: ContentPriority;
+  scheduled_date?: string | null;
+};
+
+export type UpdateContentPayload = Partial<CreateContentPayload> & {
+  status?: ContentStatus;
+  published_url?: string | null;
+  published_date?: string | null;
 };
